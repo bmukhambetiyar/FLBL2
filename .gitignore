@@ -23,9 +23,9 @@ status
 # Reference PDFs / paper drafts (keep local only)
 example papers/
 paper/
-paper_new/
+elsarticle/
 paper_my/
-paper_FGCS/
+
 
 metrics/
 outputs/
