@@ -80,7 +80,7 @@
 \maketitle
 
 \begin{abstract}
-Federated learning (FL) enables privacy-preserving collaborative model training across distributed edge devices, but it also creates a critical accountability gap: the training process evolves through repeated aggregation steps that are difficult for clients, regulators, or third parties to verify after completion. This limitation is especially important in healthcare, wearable sensing, and IoT applications, where the provenance, integrity, and auditability of the learned model may be as important as its predictive performance. This paper introduces Federated Learning Blockchain Layer-2 (FLBL2), a conceptual and practical framework for making FL training histories tamper-evident, publicly verifiable, and economically feasible through Layer-2 blockchain infrastructure. The central idea is to separate large model artifacts from compact audit commitments: model-related artifacts are stored off-chain using IPFS content-addressed storage, while their cryptographic references are committed to a public Layer-2 blockchain through an on-chain hash-chain structure. This dual-storage design provides two complementary forms of tamper evidence: any modification to stored artifacts changes their IPFS Content Identifiers (CIDs), while any alteration of the recorded training sequence breaks the on-chain hash chain. Beyond the audit architecture, the paper introduces FLBL2-LPSC, a seven-criterion Layer-2 platform selection framework that evaluates candidate chains in terms of transaction cost, finality, EVM compatibility, settlement security, institutional backing, ecosystem maturity, and public accessibility. This framework emphasizes that blockchain selection is not merely an implementation detail, but a core design decision for deployable FL audit systems. To demonstrate feasibility, FLBL2 is instantiated on a physical edge testbed using ten Raspberry Pi 4 devices (ARM Cortex-A72, 4 GB RAM) and a production Layer-2 blockchain, with a 12-class human activity recognition task used as a representative privacy-sensitive IoT workload. The system is evaluated across 20 independent sessions totaling 200 FL rounds, with each aggregation step committed on Base L2 and all round artifacts archived as IPFS CIDs. The results show that per-round blockchain auditability can be achieved without disrupting FL convergence and at a cost low enough for practical deployment. Overall, FLBL2 contributes a reproducible model for trustworthy FL infrastructure by combining privacy-preserving learning, content-addressed artifact storage, public auditability, and cost-efficient Layer-2 blockchain verification. All 840 IPFS pins, 620 on-chain transactions, source code, and the full 200-round trace are available at \url{https://github.com/shinratttensei1/FLBL2}.
+Federated learning (FL) enables privacy-preserving collaborative model training across distributed edge devices, but it also creates a critical accountability gap: the training process evolves through repeated aggregation steps that are difficult for clients, regulators, or third parties to verify after completion. This limitation is especially important in healthcare, wearable sensing, and IoT applications, where the provenance, integrity, and auditability of the learned model may be as important as its predictive performance. This paper introduces Federated Learning Blockchain Layer-2 (FLBL2), a conceptual and practical framework for making FL training histories tamper-evident, publicly verifiable, and economically feasible through Layer-2 blockchain infrastructure. The central idea is to separate large model artifacts from compact audit commitments: model-related artifacts are stored off-chain using IPFS storage, while their cryptographic references are committed to a public Layer-2 blockchain through an on-chain hash-chain structure. This dual-storage design provides two complementary forms of tamper evidence: any modification to stored artifacts changes their IPFS Content Identifiers (CIDs), while any alteration of the recorded training sequence breaks the on-chain hash chain. The paper also introduces FLBL2-LPSC, a seven-criterion Layer-2 platform selection framework that evaluates candidate chains in terms of transaction cost, finality, EVM compatibility, settlement security, institutional backing, ecosystem maturity, and public accessibility. To demonstrate feasibility, FLBL2 is instantiated on a physical edge testbed using ten Raspberry Pi 4 devices (ARM Cortex-A72, 4 GB RAM) and a production Layer-2 blockchain, with a 12-class human activity recognition task used as a representative privacy-sensitive IoT workload. The system is evaluated across 20 full sessions totalling 200 FL rounds, with each aggregation step committed on Base L2 and all round artifacts archived as IPFS CIDs. The results show that per-round blockchain auditability can be achieved without disrupting FL convergence and at a cost low enough for practical deployment. Overall, FLBL2 contributes a reproducible model for FL infrastructure by combining privacy-preserving learning, safe storage, public auditability, and cost-efficient Layer-2 blockchain verification. All 840 IPFS pins, 620 on-chain transactions, source code, and the full 200-round trace are available at \url{https://github.com/shinratttensei1/FLBL2}.
 \end{abstract}
 
 \keywords{Federated Learning \and Blockchain \and Layer-2 \and IPFS \and Human Activity Recognition \and Edge Computing \and Testbed}
@@ -90,13 +90,13 @@ Federated learning (FL) enables privacy-preserving collaborative model training 
 
 Federated learning (FL) enables collaborative model training across distributed devices that hold private and locally generated data, a paradigm that is particularly important for privacy-sensitive domains such as healthcare, wearable sensing, smart homes, and Internet-of-Things (IoT) applications~\cite{mcmahan2017communication,kairouz2020advances,yazici2023ehealth,singh2022framework}. Instead of transferring raw data to a central repository, FL allows edge clients to train local models and share only model updates or parameters with an aggregation server. This design reduces direct exposure of sensitive data and makes FL attractive for real-world environments in which data are distributed across hospitals, mobile devices, wearable sensors, or low-cost embedded platforms.
 
-However, the privacy advantages of FL do not automatically provide accountability. In most practical FL deployments, the aggregation server remains a trusted central coordinator that receives client updates, performs aggregation, generates the global model, and records the training history. Clients and external auditors typically have no independent mechanism to verify whether all submitted updates were included, whether the aggregation was performed as claimed, whether the correct global model was distributed in each round, or whether historical records were modified after training. This accountability gap---the inability of clients, regulators, or third parties to audit the complete training process post hoc---remains a fundamental barrier to the adoption of FL in operational and high-stakes settings.
+However, the privacy advantages of FL do not automatically provide accountability. In most practical FL deployments, the aggregation server remains a trusted central coordinator that receives client updates, performs aggregation, generates the global model, and records the training history. Clients and external auditors typically have no independent mechanism to verify whether all submitted updates were included, whether the aggregation was performed as claimed, whether the correct global model was distributed in each round, or whether historical records were modified after training. This accountability gap, the inability of clients, regulators, or third parties to audit the complete training process post hoc, ßremains a fundamental barrier to the adoption of FL in operational and high-stakes settings.
 
 This limitation becomes especially critical in healthcare and IoT systems, where the provenance of a learned model may be as important as its predictive accuracy. For example, in elderly monitoring, human activity recognition, or medical IoT applications, stakeholders may need to verify which devices participated in training, which model artifacts were produced, whether abnormal client behavior was observed, and whether the released global model corresponds to a specific sequence of aggregation rounds. Without a verifiable training history, a centralized aggregator could alter, omit, reorder, or misreport aggregation steps without detection, weakening trust in the resulting model and limiting the reproducibility, certifiability, and forensic value of FL deployments.
 
 Blockchain provides a promising mechanism to address this accountability problem. By recording a cryptographic hash, content identifier, or commitment for each aggregation round, a blockchain can provide a tamper-evident and append-only audit trail for FL training~\cite{qu2022blockchain,qammar2023securing}. Once round-level information is committed to the ledger, any later modification of the corresponding model artifact or training record becomes detectable. In this sense, blockchain complements FL: FL preserves data locality and reduces raw-data exposure, while blockchain provides transparent provenance, historical integrity, and independent post-hoc verifiability.
 
-Nevertheless, using blockchain for FL auditability introduces a practical cost barrier. Ethereum Layer-1 (L1) provides strong public verifiability, but its transaction costs make per-round FL auditing economically infeasible for realistic deployments. If each FL round requires multiple on-chain writes to record local, voting, and global model commitments, the total cost increases linearly with the number of rounds and can quickly dominate the cost of the experiment itself. In the setting considered in this manuscript, an Ethereum L1 implementation would cost approximately $24 per round under representative gas assumptions, making long-running or repeated FL experiments impractical.
+Nevertheless, using blockchain for FL auditability introduces a practical cost barrier. Ethereum Layer-1 (L1) provides strong public verifiability, but its transaction costs make per-round FL auditing economically infeasible for realistic deployments. If each FL round requires multiple on-chain writes to record local, voting, and global model commitments, the total cost increases linearly with the number of rounds and can quickly dominate the cost of the experiment itself. In the setting considered in this manuscript, an Ethereum L1 implementation would cost approximately \$24 per round under representative gas assumptions, making long-running or repeated FL experiments impractical.
 
 Layer-2 (L2) blockchain systems provide a practical alternative by substantially reducing transaction costs while retaining public verifiability and, in many cases, settlement guarantees linked to Ethereum L1~\cite{gudgeon2020sok,zhao2024l2intro}. For FL auditability, this cost reduction changes the feasibility of the entire design: per-round blockchain recording can become a routine component of the FL infrastructure rather than an expensive proof-of-concept. In particular, production L2 networks such as Base mainnet allow the audit layer to preserve permissionless verification while reducing the cost by more than 5,600$\times$ compared with Ethereum L1. This motivates the central idea of the manuscript: full per-round blockchain auditability for FL can be made practical when model artifacts are stored off-chain through content-addressed storage and their cryptographic commitments are written to a low-cost public L2 chain.
 
@@ -104,9 +104,9 @@ This paper introduces FLBL2, the first physical testbed to demonstrate full per-
 
 The proposed system runs 200 rounds of human activity recognition (HAR) across 10 Raspberry Pi 4 devices, each serving as a federated edge client. Every aggregation step is recorded on Base L2, while the corresponding local, voting, global, and metric artifacts are archived on IPFS. This design keeps large model artifacts off-chain, reducing cost, while preserving verifiability through IPFS content identifiers and on-chain cryptographic commitments. As a result, any modification to a stored artifact or any disruption in the recorded training sequence becomes detectable.
 
-The empirical evaluation shows that FLBL2 maintains strong model performance while providing complete auditability. The peak accuracy reaches 98.6% $\pm$ 1.6%, and verifyChain() returns true for all 20 sessions with zero violations, confirming the integrity of the recorded training history. To improve operational efficiency, FLBL2 incorporates four targeted middleware optimizations, including asynchronous IPFS uploads and gas-parameter caching, referred to as FLBL2-OPT. These optimizations reduce the mean round time by 22.4% and the round-time variance by 57.6% ($p=0.004$, Mann-Whitney U), without affecting convergence or final model quality ($p=0.103$, Wilcoxon).
+The empirical evaluation shows that FLBL2 maintains strong model performance while providing complete auditability. The baseline variant achieves peak accuracy $98.6\% \pm 1.6\%$, and the optimised variant achieves $97.2\% \pm 2.1\%$.and verifyChain() returns true for all 20 sessions with zero violations, confirming the integrity of the recorded training history. To improve operational efficiency, FLBL2 incorporates four targeted middleware optimizations, including asynchronous IPFS uploads and gas-parameter caching, referred to as FLBL2-OPT. These optimizations reduce the mean round time by 22.4\% and the round-time variance by 57.6\% ($p=0.004$, Mann-Whitney U), without affecting convergence or final model quality ($p=0.103$, Wilcoxon).
 
-The experimental results further demonstrate that full per-round blockchain auditability is economically practical on production Layer-2 infrastructure. Audit costs remain below $0.012 per round at $2,300/ETH, yielding over 2,000$\times$ minimum and 5,600$\times$ median cost savings relative to Ethereum mainnet. Across the full experiment, all 840 IPFS pins and 620 on-chain transactions are verifiable, confirming that the proposed design can support publicly auditable FL training at low operational cost. To support reproducibility, we release the full code, dataset splits, logs, verifiable artifacts, and the complete 200-round trace as open resources.
+The experimental results further demonstrate that full per-round blockchain auditability is economically practical on production Layer-2 infrastructure. Audit costs remain below $0.012 per round at $2,300/ETH, yielding over 2,000$\times$ minimum and 5,600$\times$ median cost savings relative to Ethereum mainnet. Across the full experiment, all 840 IPFS pins and 620 on-chain transactions are available, confirming that the proposed design can support publicly auditable FL training at low operational cost. To support reproducibility, we release the full code, dataset splits, logs, verifiable artifacts, and the complete 200-round trace as open resources.
 
 In summary, this study makes five main contributions. First, it presents a real 10-device ARM federated learning testbed integrated with a production L2 blockchain backend, demonstrating end-to-end feasibility on physical hardware rather than simulated environments. Second, it proposes a dual-storage audit architecture that combines IPFS CIDs with an on-chain hash chain to provide independent and complementary tamper evidence. Third, it introduces FLBL2-LPSC, a named seven-criterion framework for Layer-2 platform selection, and applies it to justify the choice of Base mainnet. Fourth, it provides comprehensive cost and performance benchmarking through a three-way comparison of Ethereum L1, Base L2 baseline, and Base L2 optimized configurations. Finally, it releases code, logs, dataset splits, and verifiable artifacts to support reproducibility.
 
@@ -117,7 +117,7 @@ The remainder of the paper is organized as follows. Section~\ref{sec:related} re
 % ============================================================
 \section{Related Work}
 \label{sec:related}
-In this section we review the related work on blockchain-augmented federated learning, IPFS-based content-addressed storage, and Layer-2 blockchain systems. It highlights existing approaches, identifies their limitations in terms of deployability, cost, and auditability, and positions the proposed FLBL2 framework within the broader research landscape.
+In this section, we review the related work on blockchain-augmented federated learning, IPFS-based content-addressed storage, and Layer-2 blockchain systems. It highlights existing approaches, identifies their limitations in terms of deployability, cost, and auditability, and positions the proposed FLBL2 framework within the broader research landscape.
 
 \subsection{Blockchain-Augmented Federated Learning}
 The idea of recording FL gradients or model hashes on a distributed ledger
@@ -137,7 +137,7 @@ public-chain transaction cost as the dominant barrier to production;
 Qammar et al.~\cite{qammar2023securing} conducted a systematic literature
 review highlighting auditability and tamper-evidence as the principal
 motivations. Qu et al.~\cite{qu2022blockchain} survey blockchain-enabled FL
-across IoT and conclude that immutability and decentralized coordination are
+across IoT and conclude that immutability and decentralised coordination are
 The two features that consistently justify the overhead.
 
 Work addressing specific attack scenarios has grown rapidly. Rückel et
@@ -156,7 +156,7 @@ learning for wireless sensor network security, and the trustworthy IoT
 Singh et al.~\cite{singh2022framework} demonstrate
 blockchain-backed FL for IoT healthcare data and document the privacy
 tradeoffs, while Orabi et al.~\cite{orabi2025adapting} study the security
-implications of decentralized knowledge enhancement in federated settings.
+implications of decentralised knowledge enhancement in federated settings.
 Bayan and Banach~\cite{bayan2023exploring} analyze privacy concerns
 in permissionless blockchain networks, identifying the public chain
 accessibility and data minimisation as the key design tensions that
@@ -167,8 +167,7 @@ on a physical FL testbed with full transaction cost accounting.
 IPFS provides content-addressed, permissionless storage where a CID
 uniquely identifies and verifies content~\cite{benet2014ipfs}. Daniel et
 al.~\cite{daniel2022ipfs} characterize IPFS performance and availability,
-noting that persistence depends on active pinning services---a constraint
-our system addresses with Pinata and the on-chain CID commitment.
+noting that persistence depends on active pinning services---a constraint our system addresses with Pinata and the on-chain CID commitment.
 Castellon et al.~\cite{castellon2022ipls} study IPFS-linked storage for
 FL artifacts, confirming that content addressing is essential for
 post-hoc verification, and Wu et al.~\cite{wu2026bfmil} confirm that
@@ -185,8 +184,7 @@ al.~\cite{trotta2024edgehar} deploy federated HAR on ARM edge devices and
 show competitive accuracy against centralized training. Albogamy et
 al.~\cite{albogamy2025iotfl} evaluate FL on Raspberry Pi hardware for
 IoMT activity monitoring, and Minh et al.~\cite{minh2025iiot} demonstrate
-federated edge learning for industrial IoT HAR on constrained nodes. Our
-group has developed complementary approaches to lightweight activity
+Federated edge learning for industrial IoT HAR on constrained nodes. Our group has developed complementary approaches to lightweight activity
 recognition and e-health monitoring on resource-constrained hardware:
 Yatbaz et al.~\cite{yatbaz2021activity} propose color-coded CNN
 representations for sensor-based HAR and anomaly detection, Baltabay et
@@ -248,13 +246,13 @@ Ullah~\cite{ullah2025spbfl}                 & Eth L1    & No  & No  & No  & No  
 % ============================================================
 \section{Layer-2 Platform Selection: The FLBL2-LPSC Framework}
 \label{sec:l2selection}
-This section presents the Layer 2 Platform Selection Framework (FLBL2-LPSC), which offers a systematic approach to choosing a blockchain backend suitable for federated learning auditability. It defines a set of operational criteria, transaction cost, purpose, EVM compatibility, settlement security, ecosystem maturity, and public accessibility, and applies them to evaluate candidate platforms. We also explain the need for rigorous Layer 2 platform selection and justifies the choice of the Base mainnet as the most appropriate platform for the proposed FLBL2 system.
+This section presents the Layer 2 Platform Selection Framework (FLBL2-LPSC), which offers a systematic approach to choosing a blockchain backend suitable for federated learning auditability. It defines a set of operational criteria, transaction cost, purpose, EVM compatibility, settlement security, ecosystem maturity, and public accessibility, and applies them to evaluate candidate platforms. We also explain the need for rigorous Layer 2 platform selection and justify the choice of the Base mainnet as the most appropriate platform for the proposed FLBL2 system.
 
 \subsection{Motivation and Selection Criteria}
 We introduce the \emph{FLBL2 Layer Platform Selection Criteria} (FLBL2-LPSC)
 as a reusable decision framework for blockchain-enabled FL deployments.
 Instead of ad-hoc chain selection, FLBL2-LPSC scores each candidate on seven
-operational dimensions that jointly determine whether per-round audit is
+operational dimensions that jointly determine whether a per-round audit is
 economically viable and production-ready (Table~\ref{tab:lpsc_criteria}).
 
 \begin{table}[t]
@@ -314,7 +312,7 @@ a compressed proof to L1, which is why the observed Base range stays at
   seven-criteria framework.
   Cost per transaction is approximate at April~2026 market conditions
   (ETH\,=\,\$2{,}300). $\dagger$\,Hyperledger Fabric has no native token
-  cost but requires managed consensus infrastructure.
+  cost but requires a managed consensus infrastructure.
   \checkmark\,=\,criterion met; $\times$\,=\,not met.}
 \label{tab:chains}
 \centering\footnotesize
@@ -362,7 +360,7 @@ defeat the purpose of an open, permissionless audit trail~\cite{bayan2023explori
 This section presents the overall FLBL2 system architecture, describing how federated learning, IPFS-based storage, and Layer-2 blockchain auditing are integrated into a unified framework. It details the layered design of the system, the interaction between edge clients, aggregation server, off-chain storage, and on-chain components, as well as the protocol governing training rounds, artifact handling, and verification. This section also introduces the dual-storage audit mechanism and the smart contract logic that together ensure end-to-end integrity and verifiable training history.
 
 \subsection{Architecture Overview}
-FLBL2 has four functional layers (Fig.~\ref{fig:arch}): \emph{Edge},
+FLBL2 has four functional components (Fig.~\ref{fig:arch}): \emph{Edge},
 \emph{Aggregation}, \emph{IPFS Storage}, and \emph{Blockchain Audit}.
 Edge devices run local training and evaluation. The aggregation server
 runs FL coordination and all blockchain middleware. IPFS stores model
@@ -372,7 +370,7 @@ The round-level interaction sequence is detailed in Fig.~\ref{fig:workflow}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth,height=1.00\textheight,keepaspectratio]{new_overall_chart.drawio.png}
+\includegraphics[width=1\linewidth,height=1.00\textheight,keepaspectratio]{overall_new_13.05.2026.png}
 \caption{Overall FLBL2 architecture and workflow. Edge clients (RPi~4B) run
   local training, the Flower server performs MedicalFedAvg aggregation, artifacts
   are pinned to IPFS, and CID references are committed on Base~L2 for per-round
@@ -440,7 +438,7 @@ two devices. Before aggregation, each client submits its local loss. An audit
 threshold is computed as $\theta_r = \mu + \sigma$ of the submitted losses.
 Clients exceeding $\theta_r$ are flagged in the on-chain vote record; flagging
 is informational only and does not alter aggregation weights or exclude any
-client. All 200 rounds proceeded with full client participation regardless of
+client. All 200 rounds proceeded with full client participation regardless ofthe 
 vote outcome, ensuring that the on-chain record provides a complete and
 unmodified training trace.
 Algorithm~\ref{alg:faw} presents the baseline per-round write sequence;
@@ -452,11 +450,12 @@ quantitatively in Section~\ref{subsec:opts}.
 \centering
 \includegraphics[width=0.95\textheight,keepaspectratio]{sequence_chart_02.png}
 \caption{Round-level FLBL2 interaction sequence. The FL server coordinates
-  model broadcast, client updates, loss-threshold voting, three on-chain write
+  model broadcast, client updates, loss-threshold voting, three on-chain writes
   transactions (LOCAL/VOTE/GLOBAL), and asynchronous IPFS uploads, then closes
   the round and continues to $r{+}1$ with session-level chain verification.}
 \label{fig:workflow}
 \end{sidewaysfigure}
+\FloatBarrier
 
 \begin{algorithm}[h]
 \caption{Baseline per-round fire-and-wait blockchain write}
@@ -473,6 +472,23 @@ quantitatively in Section~\ref{subsec:opts}.
 \State Call \texttt{verifyChain()} \quad $\triangleright$ per-round integrity check
 \end{algorithmic}
 \end{algorithm}
+
+The baseline protocol (Alg.~\ref{alg:faw}) issues $3N$ \texttt{eth\_estimateGas} and $3N$
+\texttt{eth\_gasPrice} RPC calls per session---$O(N)$ network-bound operations in each
+group---plus $3N$ blocking IPFS uploads on the round critical path.
+Uploads dominate: the measured mean per-CID upload time is 11{,}436\,ms
+(Table~\ref{tab:overhead}), giving an expected per-round IPFS blocking cost of
+34{,}308\,ms, with a worst-case tail reaching $3\times190{,}830$\,ms under Pinata
+congestion, which directly explains the $\sigma{=}67.3$\,s round-time standard
+deviation observed across the ten baseline sessions.
+Chain verification compounds the overhead further: at round $r$ the chain holds
+$1{+}3r$ blocks, so each \texttt{verifyChain()} invocation performs $O(r)$ hash
+comparisons; summed over $N$ rounds, the session-total verification work is
+$\sum_{r=1}^{N}(1{+}3r)=N+\tfrac{3N(N+1)}{2}=O(N^2)$.
+At $N{=}10$, a single session accumulates 175 block reads distributed across 10
+calls on chains of 4, 7, 10, \ldots, 31 blocks respectively.
+The baseline therefore carries an $O(N)$ critical-path IPFS penalty and an
+$O(N^2)$ cumulative verification overhead per session.
 
 \begin{algorithm}[h]
 \caption{Optimized FL-Blockchain session protocol (FLBL2-OPT)}
@@ -495,22 +511,6 @@ quantitatively in Section~\ref{subsec:opts}.
 \end{algorithmic}
 \end{algorithm}
 
-The baseline protocol (Alg.~\ref{alg:faw}) issues $3N$ \texttt{eth\_estimateGas} and $3N$
-\texttt{eth\_gasPrice} RPC calls per session---$O(N)$ network-bound operations in each
-group---plus $3N$ blocking IPFS uploads on the round critical path.
-Uploads dominate: the measured mean per-CID upload time is 11{,}436\,ms
-(Table~\ref{tab:overhead}), giving an expected per-round IPFS blocking cost of
-34{,}308\,ms, with a worst-case tail reaching $3\times190{,}830$\,ms under Pinata
-congestion, which directly explains the $\sigma{=}67.3$\,s round-time standard
-deviation observed across the ten baseline sessions.
-Chain verification compounds the overhead further: at round $r$ the chain holds
-$1{+}3r$ blocks, so each \texttt{verifyChain()} invocation performs $O(r)$ hash
-comparisons; summed over $N$ rounds, the session-total verification work is
-$\sum_{r=1}^{N}(1{+}3r)=N+\tfrac{3N(N+1)}{2}=O(N^2)$.
-At $N{=}10$, a single session accumulates 175 block reads distributed across 10
-calls on chains of 4, 7, 10, \ldots, 31 blocks respectively.
-The baseline therefore carries an $O(N)$ critical-path IPFS penalty and an
-$O(N^2)$ cumulative verification overhead per session.
 
 FLBL2-OPT (Alg.~\ref{alg:opt}) eliminates the $O(N^2)$ verification term by
 deferring \texttt{verifyChain()} to a single call at session end (O4): the scan
@@ -532,6 +532,7 @@ Concretely, O3 removes $\approx34{,}308$\,ms of mean blocking time per round fro
 the critical path and O1+O2+O4 contribute a further $\approx1{,}942$\,ms of
 deterministic savings (Table~\ref{tab:opts}), together yielding the 22.4\% mean
 round-time reduction and 57.6\% variance reduction reported in Table~\ref{tab:walltime}.
+
 
 \FloatBarrier
 % ============================================================
@@ -578,7 +579,7 @@ Python               & 3.11 \\
 web3.py              & 7.x \\
 Pinata SDK           & 3.x \\
 Solidity compiler    & 0.8.20 \\
-OS (RPi)             & Raspberry Pi OS Bookworm \\
+OS (RPi)             & Raspberry Pi OS (64-bit) / Debian Trixie \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -615,8 +616,8 @@ SE-ResNet design follows that principle.
 We ran 20 independent sessions---10 \emph{Baseline} and 10 \emph{Optimized},
 each comprising 10 aggregation rounds (100 rounds per variant, 200 total).
 Sessions ran consecutively from 20:12 on 24~April~2026 to 05:31 on
-25~April~2026. In the \emph{Baseline} variant, IPFS uploads block each round
-synchronously, gas limits are estimated per transaction, gas prices are
+25~April~2026. In the \emph{Baseline} variant, IPFS uploads a block each round
+synchronously, gas limits are estimated per transaction, and gas prices are
 fetched per transaction, and \texttt{verifyChain()} executes after each round.
 The \emph{Optimized} variant applies four targeted changes: \textbf{O1}
 caches the gas-limit estimate per round (1 RPC call instead of 3);
@@ -700,7 +701,7 @@ Infrastructure & per round
 Table~\ref{tab:convergence} shows per-round mean accuracy and loss across
 all ten sessions of each variant. Both variants converge along the same
 trajectory: accuracy crosses 90\% by round~5, exceeds 95\% by round~7,
-and stabilises above 96\% in rounds 9--10.
+and stabilises above 95\% in rounds 9--10.
 
 \begin{table}[t]
 \caption{Per-round FL metrics (mean, $n=10$ sessions each).
@@ -911,7 +912,7 @@ the best session of each variant.
   bar width=4.5pt,
   xlabel={F1 score},
   symbolic y coords={
-    Jump,Run,Jog,Cycle,Knee,Arm,Waist,Stairs,Walk,Lying,Sit,Stand},
+    Jump, Run, Jog, Cycle, Knee, Arm, Waist, Stairs, Walk, Lying, Sit, Stand},
   ytick=data,
   yticklabel style={font=\footnotesize\sffamily},
   xmin=0.70, xmax=1.05,
@@ -948,11 +949,11 @@ the best session of each variant.
 
 \begin{figure}[htbp]
 \centering
-\begin{minipage}[t]{0.48\linewidth}
+\begin{minipage}[t]{0.5\linewidth}
   \centering
   \includegraphics[width=\linewidth]{cm_baseline_r10.png}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.48\linewidth}
+\begin{minipage}[t]{0.5\linewidth}
   \centering
   \includegraphics[width=\linewidth]{cm_optimized_r10.png}
 \end{minipage}
@@ -1007,7 +1008,7 @@ N9 & A & $17.91{\pm}0.12$ & 83.2 & \phantom{0}979 & 61.4\,/\,65.2 & 2.058 \\
 \end{table}
 
 Client~C0 is a persistent thermal outlier: its mean temperature is
-6.6°C above the fleet mean and it reaches 74.0°C, the closest to the
+5.5°C above the fleet mean and it reaches 74.0°C, the closest to the
 ARM Cortex-A72 throttle threshold of 80°C across the entire experiment.
 Client C9 consistently uses the least RAM (979\,MB vs.\ 1047\,MB fleet
 mean), reflecting its smaller data partition (subject~2 alone). CPU
@@ -1020,7 +1021,7 @@ takes only 2.11\,s per device.
 \label{subsec:opts}
 
 Table~\ref{tab:overhead} decomposes the per-round middleware overhead
-measured from 310 baseline rounds. IPFS uploads and transaction
+measured from 310 baseline rounds. IPFS uploads and transactions
 confirmations are the two dominant costs, but they exhibit fundamentally
 different statistical behavior: confirmation time is determined by the
 Base~L2 sequencer (external) and confirms predictably in tens of seconds;
@@ -1062,7 +1063,7 @@ TX confirmation (per round, max of 3)
 \end{table}
 
 Three IPFS uploads per round compound the upload variance: the expected
-blocking time is $3{\times}11{,}436{=}34{,}308$\,ms but can reach
+blocking time is $3{\times}11{,}436{=}34{,}308$\,ms, but can reach
 $3{\times}190{,}830{=}572{,}490$\,ms in the worst case, far exceeding any
 confirmation delay. In round~5 of session \texttt{221512}, two uploads
 exceeded 150\,s each, producing a single-round wall time of 421.7\,s.
@@ -1070,46 +1071,81 @@ Round-level overhead excluding confirmation is $1{,}820\pm740$\,ms
 (gas estimation + gas price + TX send + verifyChain), confirming that
 non-IPFS, non-confirmation components are fast and predictable.
 
-Figure~\ref{fig:txpin_raw} summarizes blockchain and IPFS outcome counts
+Figure~\ref{fig:txpin_raw} summarises the blockchain and IPFS outcome counts
 per variant. Table~\ref{tab:opts} quantifies the contribution of each optimization
 to per-round latency reduction.
 
+
 \begin{figure}[htbp]
 \centering
+\pgfplotsset{compat=1.18}
+
+% Colorblind-safe and print-friendly palette
+\definecolor{fgcsBlue}{HTML}{0072B2}
+\definecolor{fgcsOrange}{HTML}{D55E00}
+\definecolor{fgcsGray}{HTML}{999999}
+
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.95\linewidth, height=0.52\linewidth,
+  width              = \linewidth,
+  height             = 0.50\linewidth,
+  clip               = false,
   ybar,
-  bar width=14pt,
-  ymin=0, ymax=450,
-  ylabel={Count},
-  symbolic x coords={Baseline,Optimized},
-  xtick=data,
-  enlarge x limits=0.35,
-  axis line style={clrAxis,thin},
-  tick style={clrAxis,thin},
-  ticklabel style={font=\small\sffamily,color=clrAxis},
-  label style={font=\small\sffamily,color=clrAxis},
-  ymajorgrids=true,
-  grid style={clrGrid,thin,dashed},
-  legend style={font=\footnotesize\sffamily,draw=clrGrid,fill=white,
-    at={(0.02,0.98)},anchor=north west},
-  legend cell align=left,
+  bar width          = 12pt,
+  ymin               = 0,
+  ymax               = 490,
+  % FIX 1: numeric coords instead of symbolic — lets bar shift=0pt work correctly
+  xmin               = 0.5,
+  xmax               = 2.5,
+  xtick              = {1, 2},
+  xticklabels        = {Baseline, Optimized},
+  axis line style    = {black!80, thick},
+  tick style         = {black!80, thick},
+  ticklabel style    = {font=\small\sffamily, color=black!80},
+  label style        = {font=\small\sffamily, color=black!80},
+  ymajorgrids        = true,
+  grid style         = {black!15, thin, dashed},
+  % FIX 2: nodes near coords removed from axis — moved onto each \addplot instead
+  legend style = {
+    font           = \scriptsize\sffamily,
+    draw           = black!30,
+    fill           = white,
+    at             = {(0.5,-0.20)},
+    anchor         = north,
+    legend columns = 3,
+    column sep     = 1.0em,
+  },
+  legend cell align = left,
 ]
-\addplot[fill=clrChain!70, draw=none] coordinates {(Baseline,310) (Optimized,310)};
+
+\addplot[fill=fgcsBlue!90, draw=fgcsBlue, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(0.88, 310) (1.88, 310)};
 \addlegendentry{Unique TX hashes}
-\addplot[fill=clrIPFS!70, draw=none] coordinates {(Baseline,410) (Optimized,406)};
+
+\addplot[fill=fgcsOrange!90, draw=fgcsOrange, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(1.00, 410) (2.00, 406)};
 \addlegendentry{Successful IPFS pins}
-\addplot[fill=clrAgg!70, draw=none] coordinates {(Baseline,10) (Optimized,14)};
+
+\addplot[fill=fgcsGray!80, draw=black!50, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(1.12, 10) (2.12, 14)};
 \addlegendentry{Failed pins}
+
 \end{axis}
 \end{tikzpicture}
-\caption{Raw blockchain/IPFS outcomes parsed from
-  \texttt{outputs/tx\_pin\_map.csv}. Both variants produce the same number
-  of unique on-chain transactions (310), while pin failures remain low
-  (10 baseline, 14 optimized) over 420 pins per variant.}
+\caption{Blockchain/IPFS outcomes from \texttt{tx\_pin\_map.csv}. TX hash counts are identical across variants~(310); successful pin counts differ marginally (410 vs.\ 406). Failure rates remain low: 2.4\% (baseline) and 3.3\% (optimised).}
 \label{fig:txpin_raw}
 \end{figure}
+
+
 
 \begin{table}[t]
 \caption{Per-round latency savings from each optimization.
@@ -1260,8 +1296,7 @@ contribute a further $\approx$2.0\,s deterministic saving per round.
 
 Tables~\ref{tab:audit_stats} and~\ref{tab:costs} report the blockchain audit
 statistics and cost analysis for the full 200-round experiment. Over 840
-pin-map entries spanning 20 sessions, 97.1\% of IPFS pins succeeded; all 24
-soft failures were retried automatically and the CIDs remain pinned and
+pin-map entries spanning 20 sessions, 97.1\% of IPFS pins succeeded; all 24 soft failures were retried automatically, and the CIDs remain pinned and
 accessible. Model payload bytes are bit-identical at 3{,}439{,}144 bytes
 across all 200 rounds, confirming reproducible SE-ResNet serialisation under
 PyTorch~2.3 on ARM Cortex-A72 hardware. Most significantly, \texttt{verifyChain()}
@@ -1328,7 +1363,7 @@ $>$5{,}600$\times$ reduction at median L1 rates are not minor engineering
 conveniences: at L1 rates, the equivalent 200-round experiment would cost
 \$4{,}800--\$30{,}000, making iterative research economically infeasible.
 At L2 rates, the blockchain record costs less than a cup of coffee per
-session and under \$0.012 per aggregation round regardless of the number
+session and under \$0.012 per aggregation round, regardless of the number
 of clients or model size. The cost per TX is fixed, so FLBL2's audit
 overhead does not grow with model parameters, dataset size, or number of
 training examples---only with the number of rounds and TX types per round.
@@ -1461,19 +1496,15 @@ deployments~\cite{albogamy2025iotfl,minh2025iiot}.
 
 
 \FloatBarrier
-% ============================================================
-\section{Conclusion}
-\label{sec:conclusion}
-
 \section{Conclusion}
 
 This paper addressed a central accountability gap in federated learning: the lack of a verifiable, tamper-evident training history that can be audited after aggregation has taken place. While FL preserves data locality and reduces direct exposure of private data, it still relies heavily on the integrity of the aggregation process. FLBL2 shows that this limitation can be addressed by combining FL with content-addressed off-chain storage and low-cost public Layer-2 blockchain commitments.
 
-We built, deployed, and benchmarked FLBL2, the first federated learning testbed to achieve full per-round blockchain auditability on real ARM edge hardware using a production Layer-2 mainnet and dual tamper-evidence via both IPFS CIDs and on-chain keccak256 hash chains. The conceptual contribution of FLBL2 is its separation of large model artifacts from compact audit commitments: model-related artifacts are stored off-chain as verifiable IPFS CIDs, while their cryptographic references are committed to an immutable on-chain hash chain. This design makes both artifact tampering and training-history manipulation detectable.
+We built, deployed, and benchmarked FLBL2, the first federated learning testbed to achieve full per-round blockchain auditability on real ARM edge hardware using a production Layer-2 mainnet and dual tamper-evidence via both IPFS CIDs and on-chain keccak256 hash chains. The conceptual contribution of FLBL2 is its separation of large model artefacts from compact audit commitments: model-related artifacts are stored off-chain as verifiable IPFS CIDs, while their cryptographic references are committed to an immutable on-chain hash chain. This design makes both artifact tampering and training-history manipulation detectable.
 
 Running on ten Raspberry Pi~4 devices (ARM Cortex-A72, 4\,GB RAM) with production infrastructure, the system achieves 98.6\%$\pm$1.6\% peak accuracy on 12-class wearable HAR across 20 independent sessions, totalling 200 rounds. Blockchain audit costs stay below \$0.012 per round---over 2{,}000$\times$ cheaper than Ethereum~L1 at \$2{,}300/ETH---and all 200 rounds completed with zero on-chain verification failures. These results demonstrate that full per-round auditability is not only technically feasible, but also economically practical for realistic edge-based FL deployments.
 
-The paper also introduced FLBL2-LPSC, a reusable named framework for selecting Layer-2 platforms for FL auditability. By considering transaction cost, finality, compatibility, settlement guarantees, institutional backing, ecosystem maturity, and public accessibility, FLBL2-LPSC frames blockchain backend selection as a core systems design decision rather than a purely implementation-level choice. In addition, the optimized middleware configuration, FLBL2-OPT, reduces mean round time by 22.4\% and variance by 57.6\%, with no effect on FL convergence ($p=0.103$), showing that auditability can be integrated without sacrificing learning quality.
+The paper also introduced FLBL2-LPSC, a reusable named framework for selecting Layer-2 platforms for FL auditability. By considering transaction cost, finality, compatibility, settlement guarantees, institutional backing, ecosystem maturity, and public accessibility, FLBL2-LPSC frames blockchain backend selection as a core systems design decision rather than a purely implementation-level choice. In addition, the optimised middleware configuration, FLBL2-OPT, reduces mean round time by 22.4\% and variance by 57.6\%, with no effect on FL convergence ($p=0.103$), showing that auditability can be integrated without sacrificing learning quality.
 
 Overall, FLBL2 demonstrates that Layer-2 blockchain makes per-round FL auditability economically routine for production deployment. More broadly, it provides a reproducible model for trustworthy FL infrastructure by combining privacy-preserving distributed learning, verifiable artifact storage, public audit commitments, and cost-efficient blockchain verification.
 

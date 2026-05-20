@@ -23,6 +23,7 @@ status
 # Reference PDFs / paper drafts (keep local only)
 example papers/
 paper/
+paper_new/
 
 metrics/
 outputs/
