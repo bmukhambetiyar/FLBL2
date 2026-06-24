@@ -926,7 +926,7 @@ cmd_train_ucihar() {
     local n_sessions="${N_SESSIONS:-10}"
     local UCI_HOSTS=("${PI_HOSTS[@]}")
     local UCI_PARTS="${#UCI_HOSTS[@]}"
-    local UCI_ROUNDS="${NUM_ROUNDS:-20}"
+    local UCI_ROUNDS="${NUM_ROUNDS:-10}"
     local UCI_DATA="$PROJECT_DIR/data/UCI_HAR/UCI_HAR_Dataset"
 
     step "FL UCI HAR — ${n_sessions}+${n_sessions} sessions  (${UCI_PARTS} clients, ${UCI_ROUNDS} rounds)"
@@ -1057,6 +1057,7 @@ PIRUN
         export FL_DATASET="ucihar"
         export FL_DATA_DIR="$UCI_DATA"
         export OUTPUT_BASE_DIR="outputs_ucihar"
+        export HARDWARE_NOTE="10x RPi4, WiFi 2.4GHz"
 
         flwr run . remote-federation \
             --run-config "num-server-rounds=${UCI_ROUNDS} lr=${LR} local-epochs=${LOCAL_EPOCHS} batch-size=${BATCH_SIZE} fraction-train=1.0 num-partitions=${UCI_PARTS} experiment-variant=\"${variant}\" blockchain-optimized=${bc_opt}" \

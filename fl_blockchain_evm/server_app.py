@@ -32,7 +32,7 @@ G, Y, C, R = '\033[92m', '\033[93m', '\033[96m', '\033[0m'
 #   outputs/optimized_20260422_153011/
 _VARIANT  = os.getenv("EXPERIMENT_VARIANT", "experiment")
 _RUN_TS   = datetime.now().strftime("%Y%m%d_%H%M%S")
-_OUT_BASE = os.getenv("OUTPUT_BASE_DIR", "outputs_pamap2")
+_OUT_BASE = os.getenv("OUTPUT_BASE_DIR", "outputs")
 _OUT_DIR  = f"{_OUT_BASE}/{_VARIANT}_{_RUN_TS}"
 os.makedirs(_OUT_DIR, exist_ok=True)
 os.makedirs(_OUT_BASE, exist_ok=True)
@@ -93,7 +93,7 @@ _EXPERIMENT_CONFIG: Dict = {
     "blockchain_optimized": os.getenv("BLOCKCHAIN_OPTIMIZED", "0") == "1",
     "ipfs_backend":         os.getenv("IPFS_BACKEND", "disabled"),
     "pinata_account":       _PINATA_ACCOUNT,
-    "hardware_note":        os.getenv("HARDWARE_NOTE", "8x RPi4, WiFi 2.4GHz"),
+    "hardware_note":        os.getenv("HARDWARE_NOTE", "10x RPi4, WiFi 2.4GHz"),
     "num_rounds":           int(_pyproject_cfg.get("num-server-rounds", 10)),
     "num_clients":          int(_pyproject_cfg.get("num-partitions", os.getenv("NUM_PARTITIONS", 8))),
     "local_epochs":         int(_pyproject_cfg.get("local-epochs", 1)),
@@ -129,7 +129,9 @@ _round_state: Dict = {
     "loss_mean":      0.0,
     "loss_std":       0.0,
     "threshold":      0.0,
-    "round_start_t":  0.0,   # wall-clock time when training results arrived
+    # Initialised to now so that round 0 (initial evaluation before any
+    # training) records a real elapsed time rather than a raw Unix timestamp.
+    "round_start_t":  _time.time(),
 }
 
 _EVAL_NUM_PARTITIONS = int(os.getenv("NUM_PARTITIONS", "7"))
@@ -424,7 +426,11 @@ def main(grid: Grid, context: Context):
             if os.path.islink(_LATEST):
                 os.unlink(_LATEST)
             os.symlink(os.path.abspath(_OUT_DIR), _LATEST)
-            _EXPERIMENT_CONFIG["variant"] = _VARIANT
+            # Update config fields that depend on the resolved variant/path.
+            # Full refresh happens below after bc_opt is read; this early write
+            # ensures the file exists at the new path if anything reads it first.
+            _EXPERIMENT_CONFIG["variant"]    = _VARIANT
+            _EXPERIMENT_CONFIG["output_dir"] = _OUT_DIR
             with open(f"{_OUT_DIR}/experiment_config.json", "w") as _f:
                 json.dump(_EXPERIMENT_CONFIG, _f, indent=2)
         except Exception as _e:
@@ -441,6 +447,28 @@ def main(grid: Grid, context: Context):
     # Push blockchain-optimized into os.environ so EVMBlockchain.__init__ picks it up
     bc_opt = int(context.run_config.get("blockchain-optimized", 0))
     os.environ['BLOCKCHAIN_OPTIMIZED'] = str(bc_opt)
+
+    # Refresh experiment_config.json now that all run_config values are resolved.
+    # The copy written at module load time may have stale values for output_dir,
+    # variant, blockchain_optimized (if BLOCKCHAIN_OPTIMIZED was set in the shell
+    # environment before main() read the run_config value).
+    _EXPERIMENT_CONFIG.update({
+        "variant":              _VARIANT,
+        "output_dir":           _OUT_DIR,
+        "blockchain_optimized": bc_opt == 1,
+        "num_rounds":           int(context.run_config.get("num-server-rounds",
+                                    os.getenv("NUM_ROUNDS", 10))),
+        "num_clients":          int(context.run_config.get("num-partitions",
+                                    os.getenv("NUM_PARTITIONS", _EXPERIMENT_CONFIG["num_clients"]))),
+        "local_epochs":         int(context.run_config.get("local-epochs",
+                                    _EXPERIMENT_CONFIG["local_epochs"])),
+        "batch_size":           int(context.run_config.get("batch-size",
+                                    _EXPERIMENT_CONFIG["batch_size"])),
+        "lr":                   float(context.run_config.get("lr",
+                                    _EXPERIMENT_CONFIG["lr"])),
+    })
+    with open(f"{_OUT_DIR}/experiment_config.json", "w") as _f:
+        json.dump(_EXPERIMENT_CONFIG, _f, indent=2)
 
     if os.path.exists(f"{_OUT_DIR}/results.json"):
         os.remove(f"{_OUT_DIR}/results.json")

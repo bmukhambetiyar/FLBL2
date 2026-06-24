@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{placeins}
+\usepackage{rotating}
+
+\title{k}
+\author{Bibarys Mukhambetiyar}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{figure}[htbp]
+\centering
+\pgfplotsset{compat=1.18}
+
+% Colorblind-safe and print-friendly palette
+\definecolor{fgcsBlue}{HTML}{0072B2}
+\definecolor{fgcsOrange}{HTML}{D55E00}
+\definecolor{fgcsGray}{HTML}{999999}
+
+\begin{tikzpicture}
+\begin{axis}[
+  width              = \linewidth,
+  height             = 0.50\linewidth,
+  clip               = false,
+  ybar,
+  bar width          = 12pt,
+  ymin               = 0,
+  ymax               = 490,
+  % FIX 1: numeric coords instead of symbolic — lets bar shift=0pt work correctly
+  xmin               = 0.5,
+  xmax               = 2.5,
+  xtick              = {1, 2},
+  xticklabels        = {Baseline, Optimized},
+  axis line style    = {black!80, thick},
+  tick style         = {black!80, thick},
+  ticklabel style    = {font=\small\sffamily, color=black!80},
+  label style        = {font=\small\sffamily, color=black!80},
+  ymajorgrids        = true,
+  grid style         = {black!15, thin, dashed},
+  % FIX 2: nodes near coords removed from axis — moved onto each \addplot instead
+  legend style = {
+    font           = \scriptsize\sffamily,
+    draw           = black!30,
+    fill           = white,
+    at             = {(0.5,-0.20)},
+    anchor         = north,
+    legend columns = 3,
+    column sep     = 1.0em,
+  },
+  legend cell align = left,
+]
+
+% FIX 3: each series pre-offset by ±0.22 from group centre (1 and 2),
+%         bar shift=0pt disables pgfplots auto-shift so bar and label
+%         both land at exactly the x coordinate given — no stacking.
+\addplot[fill=fgcsBlue!90, draw=fgcsBlue, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(0.78, 310) (1.78, 310)};
+\addlegendentry{Unique TX hashes}
+
+\addplot[fill=fgcsOrange!90, draw=fgcsOrange, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(1.00, 410) (2.00, 406)};
+\addlegendentry{Successful IPFS pins}
+
+\addplot[fill=fgcsGray!80, draw=black!50, thick,
+  bar shift=0pt,
+  nodes near coords,
+  every node near coord/.style={anchor=south, font=\scriptsize\sffamily, color=black!80, yshift=2pt},
+] coordinates {(1.22, 10) (2.22, 14)};
+\addlegendentry{Failed pins}
+
+\end{axis}
+\end{tikzpicture}
+\caption{Blockchain/IPFS outcomes from \texttt{tx\_pin\_map.csv}. TX hash counts are identical across variants~(310); successful pin counts differ marginally (410 vs.\ 406). Failure rates remain low: 2.4\% (baseline) and 3.3\% (optimised).}
+\label{fig:txpin_raw}
+\end{figure}
+
+\end{document}
