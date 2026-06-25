@@ -3,14 +3,17 @@
 extract_perf_timings.py
 =======================
 Parses the per-session performance log files (perf_*.log) from the MHEALTH
-experiment sessions (outputs/*/perf_*.log) and produces a flat CSV table of
-blockchain and IPFS timing events suitable for the Data in Brief companion
-paper.
+and UCI-HAR experiment sessions and produces flat CSV tables of blockchain
+and IPFS timing events suitable for the Data in Brief companion paper.
 
-NOTE: UCI-HAR sessions do not contain perf_*.log files; timing extraction
-      is therefore limited to the 20 MHEALTH sessions.
+NOTE: The original May 2026 UCI-HAR sessions do not contain perf_*.log files.
+      After the re-run (June 2026) UCI-HAR sessions will have perf logs and
+      this script will process them automatically.
 
-Output written to aggregated/perf_timings_mhealth.csv
+Outputs written to aggregated/:
+  perf_timings_mhealth.csv  – timing events from outputs/
+  perf_timings_ucihar.csv   – timing events from outputs_ucihar/
+                              (empty/skipped if no perf logs present)
 
 Column schema:
   session_id      – session directory name (e.g. baseline_20260424_201227)
@@ -45,10 +48,9 @@ import csv
 # ---------------------------------------------------------------------------
 REPO_ROOT   = Path(__file__).parent
 OUT_MHEALTH = REPO_ROOT / "outputs"
+OUT_UCIHAR  = REPO_ROOT / "outputs_ucihar"
 AGG_DIR     = REPO_ROOT / "aggregated"
 AGG_DIR.mkdir(exist_ok=True)
-
-OUTPUT_CSV  = AGG_DIR / "perf_timings_mhealth.csv"
 
 # ---------------------------------------------------------------------------
 # Regex patterns for each log event type
@@ -247,90 +249,91 @@ def parse_perf_log(fpath: Path, session_id: str, variant: str):
 # ---------------------------------------------------------------------------
 # Main processing
 # ---------------------------------------------------------------------------
-def main():
-    print("=" * 60)
-    print("extract_perf_timings.py — blockchain/IPFS timing extractor")
-    print("=" * 60)
+FIELDNAMES = ["session_id", "variant", "round", "event_type",
+              "block_type", "duration_ms", "extra_key", "extra_value"]
 
-    all_events = []
+
+def process_dataset(base_path: Path, dataset_label: str, output_csv: Path):
+    """Process all perf logs under base_path, write output_csv. Returns events list."""
+    all_events     = []
     sessions_found = 0
 
-    session_dirs = sorted(
-        [d for d in OUT_MHEALTH.iterdir()
-         if _is_session_dir(d)]
-    )
+    dirs = sorted([d for d in base_path.iterdir() if _is_session_dir(d)])
+    print(f"\nFound {len(dirs)} {dataset_label} session directories")
 
-    print(f"\nFound {len(session_dirs)} MHEALTH session directories")
-
-    for sdir in session_dirs:
+    for sdir in dirs:
         session_id = sdir.name
         variant    = session_id.split("_")[0]
 
-        # Find the perf log file (may be named perf_<session_id>.log)
         perf_logs = list(sdir.glob("perf_*.log"))
         if not perf_logs:
             print(f"  SKIP {session_id}: no perf_*.log found", file=sys.stderr)
             continue
 
-        perf_log = perf_logs[0]
-        events   = parse_perf_log(perf_log, session_id, variant)
+        events = parse_perf_log(perf_logs[0], session_id, variant)
         all_events.extend(events)
         sessions_found += 1
 
-        # Per-session summary
-        n_round_overhead = sum(1 for e in events if e["event_type"] == "round_overhead")
-        n_ipfs           = sum(1 for e in events if e["event_type"] == "ipfs_upload")
-        n_tx             = sum(1 for e in events if e["event_type"] == "tx_send")
-        n_confirm        = sum(1 for e in events if e["event_type"] == "tx_confirm")
+        n_overhead = sum(1 for e in events if e["event_type"] == "round_overhead")
+        n_ipfs     = sum(1 for e in events if e["event_type"] == "ipfs_upload")
+        n_tx       = sum(1 for e in events if e["event_type"] == "tx_send")
+        n_confirm  = sum(1 for e in events if e["event_type"] == "tx_confirm")
         print(f"  {session_id}: {len(events)} events "
-              f"(round_end={n_round_overhead}, ipfs={n_ipfs}, tx={n_tx}, confirm={n_confirm})")
+              f"(round_end={n_overhead}, ipfs={n_ipfs}, tx={n_tx}, confirm={n_confirm})")
 
-    # Write CSV
     if all_events:
-        fieldnames = ["session_id", "variant", "round", "event_type",
-                      "block_type", "duration_ms", "extra_key", "extra_value"]
-        with open(OUTPUT_CSV, "w", newline="") as fh:
-            writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
+        with open(output_csv, "w", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=FIELDNAMES, extrasaction="ignore")
             writer.writeheader()
             writer.writerows(all_events)
-        print(f"\n  Wrote {len(all_events):>6} rows → {OUTPUT_CSV.name}")
+        print(f"\n  Wrote {len(all_events):>6} rows → {output_csv.name}")
     else:
-        print("  WARNING: no events extracted", file=sys.stderr)
+        print(f"  No perf events found for {dataset_label} — CSV not written", file=sys.stderr)
 
-    # Summary statistics
-    print("\n" + "=" * 60)
-    print("Summary")
-    print("=" * 60)
-    print(f"  Sessions processed : {sessions_found}")
-    print(f"  Total events       : {len(all_events)}")
+    return all_events, sessions_found
 
+
+def print_summary(label: str, events: list):
+    if not events:
+        return
+    print(f"\n{label} ({len(events)} events total):")
     by_type = {}
-    for ev in all_events:
+    for ev in events:
         by_type[ev["event_type"]] = by_type.get(ev["event_type"], 0) + 1
     for etype, count in sorted(by_type.items()):
         print(f"    {etype:<25}: {count}")
 
-    # Compute mean overhead per round by variant
-    overheads_base = [e["duration_ms"] for e in all_events
-                      if e["event_type"] == "round_overhead" and e["variant"] == "baseline"]
-    overheads_opt  = [e["duration_ms"] for e in all_events
-                      if e["event_type"] == "round_overhead" and e["variant"] == "optimized"]
+    for variant_label, variant_key in [("Baseline", "baseline"), ("Optimized", "optimized")]:
+        oh = [e["duration_ms"] for e in events
+              if e["event_type"] == "round_overhead" and e["variant"] == variant_key]
+        if oh:
+            print(f"  {variant_label} round_overhead: mean={sum(oh)/len(oh):.0f} ms, n={len(oh)}")
 
-    if overheads_base:
-        print(f"\n  Baseline  round_overhead: mean={sum(overheads_base)/len(overheads_base):.0f} ms, "
-              f"n={len(overheads_base)}")
-    if overheads_opt:
-        print(f"  Optimized round_overhead: mean={sum(overheads_opt)/len(overheads_opt):.0f} ms, "
-              f"n={len(overheads_opt)}")
+    ipfs_base = [e["duration_ms"] for e in events
+                 if e["event_type"] == "ipfs_upload" and e["variant"] == "baseline"]
+    if ipfs_base:
+        print(f"  Baseline IPFS upload:   mean={sum(ipfs_base)/len(ipfs_base):.0f} ms, n={len(ipfs_base)}")
 
-    # IPFS upload times
-    ipfs_times_base = [e["duration_ms"] for e in all_events
-                       if e["event_type"] == "ipfs_upload" and e["variant"] == "baseline"]
-    if ipfs_times_base:
-        print(f"\n  Baseline  IPFS upload: mean={sum(ipfs_times_base)/len(ipfs_times_base):.0f} ms, "
-              f"n={len(ipfs_times_base)}")
 
-    print(f"\nOutput: {OUTPUT_CSV}")
+def main():
+    print("=" * 60)
+    print("extract_perf_timings.py — blockchain/IPFS timing extractor")
+    print("=" * 60)
+
+    mh_events, mh_sessions = process_dataset(
+        OUT_MHEALTH, "MHEALTH", AGG_DIR / "perf_timings_mhealth.csv"
+    )
+    uc_events, uc_sessions = process_dataset(
+        OUT_UCIHAR, "UCI-HAR", AGG_DIR / "perf_timings_ucihar.csv"
+    )
+
+    print("\n" + "=" * 60)
+    print("Summary")
+    print("=" * 60)
+    print(f"  MHEALTH sessions processed : {mh_sessions}")
+    print(f"  UCI-HAR sessions processed : {uc_sessions}")
+    print_summary("MHEALTH", mh_events)
+    print_summary("UCI-HAR", uc_events)
 
 
 if __name__ == "__main__":
