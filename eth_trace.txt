@@ -1,0 +1,8 @@
+Wallet: 0x1c7433A4A78e1C5748d01D9429F7b39e9eaDBdd4
+
+Found 0 transactions across 0 sessions
+
+Session                                        TxHash[:10]       Fee ETH     Total spent
+------------------------------------------------------------------------------------------
+
+Total spent: 0.00000000 ETH  (~$0.0000 USD)

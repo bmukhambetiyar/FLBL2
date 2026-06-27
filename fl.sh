@@ -923,20 +923,26 @@ WIFIFIX
 #                 All sessions write to outputs_ucihar/
 # ─────────────────────────────────────────────────────────────
 cmd_train_ucihar() {
+    # N_SESSIONS sets both counts; N_BASELINE / N_OPTIMIZED override individually.
+    # Examples:
+    #   N_SESSIONS=10 ./fl.sh train-ucihar          → 10 baseline + 10 optimized
+    #   N_BASELINE=3 N_OPTIMIZED=2 ./fl.sh train-ucihar → 3 baseline + 2 optimized
     local n_sessions="${N_SESSIONS:-10}"
+    local n_baseline="${N_BASELINE:-$n_sessions}"
+    local n_optimized="${N_OPTIMIZED:-$n_sessions}"
     local UCI_HOSTS=("${PI_HOSTS[@]}")
     local UCI_PARTS="${#UCI_HOSTS[@]}"
     local UCI_ROUNDS="${NUM_ROUNDS:-10}"
     local UCI_DATA="$PROJECT_DIR/data/UCI_HAR/UCI_HAR_Dataset"
 
-    step "FL UCI HAR — ${n_sessions}+${n_sessions} sessions  (${UCI_PARTS} clients, ${UCI_ROUNDS} rounds)"
+    step "FL UCI HAR — ${n_baseline} baseline + ${n_optimized} optimized sessions  (${UCI_PARTS} clients, ${UCI_ROUNDS} rounds)"
 
     local SRV_IP="${SERVER_IP:-$(server_ip)}"
     [ -n "$SRV_IP" ] || die "Could not detect server IP. Set SERVER_IP=..."
 
     info "  Server IP  : $SRV_IP"
     for i in "${!UCI_HOSTS[@]}"; do info "  Pi $i  : ${UCI_HOSTS[$i]}"; done
-    info "  Sessions   : ${n_sessions} baseline + ${n_sessions} optimized"
+    info "  Sessions   : ${n_baseline} baseline + ${n_optimized} optimized"
     info "  Rounds     : $UCI_ROUNDS  |  LR: $LR  |  Epochs: $LOCAL_EPOCHS"
     info "  Output dir : outputs_ucihar/"
 
@@ -1070,13 +1076,14 @@ PIRUN
         info "  Sleeping 15s..."; sleep 15
     }
 
-    step "ALTERNATING PHASE  (${n_sessions} baseline + ${n_sessions} optimized, interleaved)"
-    for s in $(seq 1 "$n_sessions"); do
-        _run_ucihar_session "baseline"  "$s" "0"
-        _run_ucihar_session "optimized" "$s" "1"
+    step "ALTERNATING PHASE  (${n_baseline} baseline + ${n_optimized} optimized, interleaved)"
+    local max_s=$(( n_baseline > n_optimized ? n_baseline : n_optimized ))
+    for s in $(seq 1 "$max_s"); do
+        [ "$s" -le "$n_baseline"  ] && _run_ucihar_session "baseline"  "$s" "0"
+        [ "$s" -le "$n_optimized" ] && _run_ucihar_session "optimized" "$s" "1"
     done
 
-    step "ALL UCI HAR SESSIONS COMPLETE"
+    step "ALL UCI HAR SESSIONS COMPLETE  (${n_baseline} baseline + ${n_optimized} optimized)"
     info "  Output: outputs_ucihar/"
     activate_venv 2>/dev/null || true
     python3 - "outputs_ucihar" << 'PY' 2>/dev/null || true
