@@ -1,0 +1,968 @@
+[SETUP] Run output dir : outputs_ucihar/experiment_20260626_231616
+[SETUP] Variant        : experiment
+[SETUP] Pinata account : 1
+  [PERF] Logging to outputs_ucihar/baseline_20260626_231616/perf_baseline_20260626_231616.log
+  [EVM] Connected to network (Chain ID: 8453)
+  [EVM] Using account: 0x1c7433A4A78e1C5748d01D9429F7b39e9eaDBdd4
+  [EVM] Balance: 0.0013 ETH
+  [EVM] Contract loaded: 0xBE3FeAC76293711C5D32426860303AfE24cdf527
+  [EVM] Current chain length: 4739 blocks
+  [IPFS] Pinata primary: account_1 | accounts configured: 2 (+ 1 fallback)
+  [IPFS] Backend: pinata | Compress: True
+  [EVM] IPFS storage enabled (pinata backend)
+
+[96m════════════════════════════════════════════════════════════
+  6 Activities (UCI HAR): WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING
+/home/bibarys/Documents/FL-Blockchain-EVM/venv/lib/python3.12/site-packages/torch/cuda/__init__.py:174: UserWarning: CUDA initialization: Unexpected error from cudaGetDeviceCount(). Did you run some cuda functions before calling NumCudaDevices() that might have already set an error? Error 804: forward compatibility was attempted on non supported HW (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
+  return torch._C._cuda_getDeviceCount() > 0
+Using CPU
+  Rounds: 10 | LR: 0.001 | Device: cpu
+  Eval partitioning: 10 partitions
+  Blockchain: 3 tx per round (LOCAL + VOTE + GLOBAL)
+  IPFS:       enabled
+  Dashboard:  open dashboard.html in your browser
+════════════════════════════════════════════════════════════[0m
+
+  [UCI-HAR] Loading train split from /home/bibarys/Documents/FL-Blockchain-EVM/data/UCI_HAR/UCI_HAR_Dataset ...
+  [UCI-HAR] train: 7352 windows  |  subjects: [1, 3, 5, 6, 7, 8, 11, 14, 15, 16, 17, 19, 21, 22, 23, 25, 26, 27, 28, 29, 30]
+  [UCI-HAR] Loading test split from /home/bibarys/Documents/FL-Blockchain-EVM/data/UCI_HAR/UCI_HAR_Dataset ...
+  [UCI-HAR] test: 2947 windows  |  subjects: [2, 4, 9, 10, 12, 13, 18, 20, 24]
+  [UCI-HAR] Normalization: global (pre-saved stats)
+  [UCI-HAR] Partition 0: subjects=[1, 3, 5], windows=990
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 0] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 1.7992
+   accuracy            : 0.1666
+   f1_macro            : 0.0513
+   f1_weighted         : 0.0512
+   precision_macro     : 0.0303
+   recall_macro        : 0.1667
+   specificity_macro   : 0.8331
+   auc_macro           : 0.4530
+   ── Per-Activity ──  
+     WALKING  P=0.000  R=0.000  F1=0.000  AUC=0.565  (n=496)
+     WALKING_UPSTAIRS  P=0.000  R=0.000  F1=0.000  AUC=0.199  (n=471)
+     WALKING_DOWNSTAIRS  P=0.000  R=0.000  F1=0.000  AUC=0.379  (n=420)
+     SITTING  P=0.182  R=1.000  F1=0.308  AUC=0.855  (n=491)
+     STANDING  P=0.000  R=0.000  F1=0.000  AUC=0.120  (n=532)
+     LAYING  P=0.000  R=0.000  F1=0.000  AUC=0.600  (n=537)
+  [IPFS] ✓ round_0_global_model.gz → QmUQkkSw8ssG6VxJbhEq… (3,476,897 → 3,152,165 bytes) [account_1/2]
+  [IPFS] ✓ round_0_global_metrics.gz → QmQkBs8jZPRoYs3dWeKu… (202 → 190 bytes) [account_1/2]
+
+  [EVM] Firing GLOBAL block (Round 0)...
+  [EVM] Transaction sent: 06dc228f86f7abd46606adbbd56750f7fd5c1a0308bcaf7b9ecb53f153b2fa5b
+  [EVM] Waiting for all Round 0 transactions to confirm...
+  [EVM] Waiting for 1 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854228
+
+[96m  [BLOCKCHAIN] Round 0 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4740[0m
+  [TIMING] Round wall time: 26.4s | Model payload: 3340 KB
+  [FedAvg] Round 1: lr=0.001000  (base=0.001000, decay=0.8)
+
+[96m  ROUND 1 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0378 |   1254  |  175.5  |  6  |
+|   1    | 0.0432 |   684   |   35.6  |  6  |
+|   2    | 0.0509 |   666   |   35.9  |  6  |
+|   3    | 0.0484 |   738   |   40.3  |  6  |
+|   4    | 0.0489 |   936   |   49.7  |  6  |
+|   5    | 0.0370 |   1038  |   59.2  |  6  |
+|   6    | 0.0324 |   864   |   47.8  |  6  |
+|   7    | 0.0421 |   894   |   47.7  |  6  |
+|   8    | 0.0542 |   954   |   51.4  |  6  |
+|   9    | 0.0328 |   834   |   45.7  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0428  std=0.0073  threshold=0.0501
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 1 (async)...[0m
+  [IPFS] ✓ round_1_local.gz → QmRViKU1uH8nSwQ8CoLd… (1,311 → 391 bytes) [account_1/2]
+
+  [EVM] Firing LOCAL block (Round 1, 10 clients)...
+  [EVM] Transaction sent: 4879f768465420f220acd00da611df0356fdace456ee01cc106e49c80f5385bb
+  [IPFS] ✓ round_1_votes.gz → QmPuSW7ugw8tF4AMAHdo… (1,039 → 318 bytes) [account_1/2]
+  [EVM] Firing VOTE block (Round 1: 8 accepted / 2 rejected)...
+  [EVM] Transaction sent: 4c1096563bf20c094e382a39cf182937841eeb50eae7440f64c4e273ae872b83
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0378 | ACCEPTED |
+|   1    | 0.0432 | ACCEPTED |
+|   2    | 0.0509 | REJECTED |
+|   3    | 0.0484 | ACCEPTED |
+|   4    | 0.0489 | ACCEPTED |
+|   5    | 0.0370 | ACCEPTED |
+|   6    | 0.0324 | ACCEPTED |
+|   7    | 0.0421 | ACCEPTED |
+|   8    | 0.0542 | REJECTED |
+|   9    | 0.0328 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 1 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   1    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   2    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   3    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   4    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   5    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   6    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   7    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   8    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
+|   9    | 0.8726 | 0.7540 | 0.7447 | 0.9625 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 1] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.8726
+   accuracy            : 0.7540
+   f1_macro            : 0.7447
+   f1_weighted         : 0.7458
+   precision_macro     : 0.8114
+   recall_macro        : 0.7501
+   specificity_macro   : 0.9506
+   auc_macro           : 0.9625
+   ── Per-Activity ──  
+     WALKING  P=0.994  R=0.321  F1=0.485  AUC=0.979  (n=496)
+     WALKING_UPSTAIRS  P=0.959  R=0.892  F1=0.924  AUC=0.989  (n=471)
+     WALKING_DOWNSTAIRS  P=0.791  R=0.729  F1=0.758  AUC=0.965  (n=420)
+     SITTING  P=0.542  R=0.723  F1=0.620  AUC=0.887  (n=491)
+     STANDING  P=0.598  R=0.887  F1=0.715  AUC=0.962  (n=532)
+     LAYING  P=0.985  R=0.950  F1=0.967  AUC=0.993  (n=537)
+  [IPFS] ✓ round_1_global_model.gz → QmWViofVZtWUvczHv7p2… (3,476,897 → 3,185,465 bytes) [account_1/2]
+  [IPFS] ✓ round_1_global_metrics.gz → QmVy25URjzoT4m5MKWVx… (201 → 184 bytes) [account_1/2]
+
+  [EVM] Firing GLOBAL block (Round 1)...
+  [EVM] Transaction sent: d077ca8b84615bd7ba6353edbf83ff52317ac10a7a1f54c50ace679f812d91e0
+  [EVM] Waiting for all Round 1 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854342
+  [EVM] ✓ Confirmed in block 47854343
+  [EVM] ✓ Confirmed in block 47854372
+
+[96m  [BLOCKCHAIN] Round 1 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4743[0m
+  [TIMING] Round wall time: 64.5s | Model payload: 3340 KB
+  [FedAvg] Round 2: lr=0.000800  (base=0.001000, decay=0.8)
+
+[96m  ROUND 2 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0310 |   1254  |  175.0  |  6  |
+|   1    | 0.0371 |   684   |   35.6  |  6  |
+|   2    | 0.0411 |   666   |   35.7  |  6  |
+|   3    | 0.0427 |   738   |   40.4  |  6  |
+|   4    | 0.0489 |   936   |   49.6  |  6  |
+|   5    | 0.0414 |   1038  |   59.0  |  6  |
+|   6    | 0.0352 |   864   |   47.7  |  6  |
+|   7    | 0.0400 |   894   |   47.7  |  6  |
+|   8    | 0.0391 |   954   |   51.4  |  6  |
+|   9    | 0.0354 |   834   |   46.3  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0392  std=0.0047  threshold=0.0439
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 2 (async)...[0m
+  [IPFS] ✓ round_2_local.gz → QmdjhP8yRYKinekGMEXh… (1,311 → 393 bytes) [account_1/2]
+
+  [EVM] Firing LOCAL block (Round 2, 10 clients)...
+  [EVM] Transaction sent: 10c20786018e8e8b81d05f4189a0823d22c838f5cc85f64ccda24e67e7f5b0a6
+  [IPFS] ✓ round_2_votes.gz → QmWrb1eHSmMpYCbowt6X… (1,031 → 313 bytes) [account_1/2]
+  [EVM] Firing VOTE block (Round 2: 9 accepted / 1 rejected)...
+  [EVM] Transaction sent: 1a582dbf425d1a6a650f2e2e0f8de1a7ad78f8e30a141854fe4a6eaf38f0968a
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0310 | ACCEPTED |
+|   1    | 0.0371 | ACCEPTED |
+|   2    | 0.0411 | ACCEPTED |
+|   3    | 0.0427 | ACCEPTED |
+|   4    | 0.0489 | REJECTED |
+|   5    | 0.0414 | ACCEPTED |
+|   6    | 0.0352 | ACCEPTED |
+|   7    | 0.0400 | ACCEPTED |
+|   8    | 0.0391 | ACCEPTED |
+|   9    | 0.0354 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 2 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   1    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   2    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   3    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   4    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   5    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   6    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   7    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   8    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
+|   9    | 0.3546 | 0.8979 | 0.9000 | 0.9899 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 2] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.3546
+   accuracy            : 0.8979
+   f1_macro            : 0.9000
+   f1_weighted         : 0.8986
+   precision_macro     : 0.9011
+   recall_macro        : 0.9001
+   specificity_macro   : 0.9795
+   auc_macro           : 0.9899
+   ── Per-Activity ──  
+     WALKING  P=0.946  R=0.950  F1=0.948  AUC=0.998  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.930  F1=0.961  AUC=0.995  (n=471)
+     WALKING_DOWNSTAIRS  P=0.905  R=0.957  F1=0.931  AUC=0.998  (n=420)
+     SITTING  P=0.760  R=0.827  F1=0.792  AUC=0.975  (n=491)
+     STANDING  P=0.802  R=0.769  F1=0.785  AUC=0.974  (n=532)
+     LAYING  P=1.000  R=0.968  F1=0.984  AUC=1.000  (n=537)
+  [IPFS] ✓ round_2_global_model.gz → QmXAg1XigbmrHMEJQA1c… (3,476,897 → 3,186,044 bytes) [account_1/2]
+  [IPFS] ✓ round_2_global_metrics.gz → QmXwD9spmnFBtfRLDQCp… (202 → 184 bytes) [account_1/2]
+
+  [EVM] Firing GLOBAL block (Round 2)...
+  [EVM] Transaction sent: 316bab61c9558a3e670142ae80168aed2ff1b28289fc73661baff0a63264557d
+  [EVM] Waiting for all Round 2 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854485
+  [EVM] ✓ Confirmed in block 47854486
+  [EVM] ✓ Confirmed in block 47854523
+
+[96m  [BLOCKCHAIN] Round 2 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4746[0m
+  [TIMING] Round wall time: 81.0s | Model payload: 3340 KB
+  [FedAvg] Round 3: lr=0.000640  (base=0.001000, decay=0.8)
+
+[96m  ROUND 3 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0364 |   1254  |  176.9  |  6  |
+|   1    | 0.0464 |   684   |   35.5  |  6  |
+|   2    | 0.0382 |   666   |   35.5  |  6  |
+|   3    | 0.0249 |   738   |   40.3  |  6  |
+|   4    | 0.0431 |   936   |   49.7  |  6  |
+|   5    | 0.0378 |   1038  |   59.3  |  6  |
+|   6    | 0.0275 |   864   |   47.6  |  6  |
+|   7    | 0.0464 |   894   |   48.2  |  6  |
+|   8    | 0.0378 |   954   |   51.4  |  6  |
+|   9    | 0.0335 |   834   |   46.3  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0372  std=0.0068  threshold=0.0440
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 3 (async)...[0m
+  [IPFS] Pinata account_1 exhausted (HTTP 403) → switching to account_2/2
+[IPFS] Pinata account_1 exhausted (HTTP 403) → switching to account_2/2
+  [IPFS] ✓ round_3_local.gz → QmdJuFAqfKje6a7v5gNK… (1,313 → 393 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 3, 10 clients)...
+  [EVM] Transaction sent: 86e9e379b4688d8975db73a2c0aec7c6ee29b4808ec7c8e3109d8806145b4f36
+  [IPFS] ✓ round_3_votes.gz → QmTYxkrLFyYshyueMAqu… (1,042 → 321 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 3: 8 accepted / 2 rejected)...
+  [EVM] Transaction sent: f98e9905e7a8bae4838ab2fa2e8f28e66d12045db4da3579f23c88aedfbee37d
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0364 | ACCEPTED |
+|   1    | 0.0464 | REJECTED |
+|   2    | 0.0382 | ACCEPTED |
+|   3    | 0.0249 | ACCEPTED |
+|   4    | 0.0431 | ACCEPTED |
+|   5    | 0.0378 | ACCEPTED |
+|   6    | 0.0275 | ACCEPTED |
+|   7    | 0.0464 | REJECTED |
+|   8    | 0.0378 | ACCEPTED |
+|   9    | 0.0335 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 3 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   1    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   2    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   3    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   4    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   5    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   6    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   7    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   8    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
+|   9    | 0.3292 | 0.9121 | 0.9121 | 0.9862 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 3] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.3292
+   accuracy            : 0.9121
+   f1_macro            : 0.9121
+   f1_weighted         : 0.9121
+   precision_macro     : 0.9168
+   recall_macro        : 0.9131
+   specificity_macro   : 0.9824
+   auc_macro           : 0.9862
+   ── Per-Activity ──  
+     WALKING  P=1.000  R=0.909  F1=0.952  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.995  R=0.921  F1=0.957  AUC=0.994  (n=471)
+     WALKING_DOWNSTAIRS  P=0.848  R=1.000  F1=0.918  AUC=0.998  (n=420)
+     SITTING  P=0.861  R=0.745  F1=0.799  AUC=0.951  (n=491)
+     STANDING  P=0.796  R=0.902  F1=0.846  AUC=0.975  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_3_global_model.gz → QmcDbb15CefPXXdAgzWt… (3,476,897 → 3,187,006 bytes) [account_2/2]
+  [IPFS] ✓ round_3_global_metrics.gz → QmX2nbx7tcAsw5f6t8w7… (201 → 184 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 3)...
+  [EVM] Transaction sent: ac9e02182f77663739b401f5fc335704a476d3e70bb01adaf0efdeaef63b1da4
+  [EVM] Waiting for all Round 3 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854637
+  [EVM] ✓ Confirmed in block 47854638
+  [EVM] ✓ Confirmed in block 47854668
+
+[96m  [BLOCKCHAIN] Round 3 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4749[0m
+  [TIMING] Round wall time: 67.3s | Model payload: 3340 KB
+  [FedAvg] Round 4: lr=0.000512  (base=0.001000, decay=0.8)
+
+[96m  ROUND 4 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0431 |   1254  |  176.9  |  6  |
+|   1    | 0.0314 |   684   |   35.4  |  6  |
+|   2    | 0.0358 |   666   |   35.6  |  6  |
+|   3    | 0.0361 |   738   |   40.3  |  6  |
+|   4    | 0.0464 |   936   |   50.4  |  6  |
+|   5    | 0.0358 |   1038  |   58.9  |  6  |
+|   6    | 0.0446 |   864   |   48.2  |  6  |
+|   7    | 0.0422 |   894   |   47.9  |  6  |
+|   8    | 0.0473 |   954   |   51.4  |  6  |
+|   9    | 0.0379 |   834   |   45.8  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0401  std=0.0051  threshold=0.0452
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 4 (async)...[0m
+  [IPFS] ✓ round_4_local.gz → QmfGbi2fB1vwHkkjWJZS… (1,306 → 397 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 4, 10 clients)...
+  [EVM] Transaction sent: 81df73b22fdff592a06ade8f775c4535af7144ba10148aea57d29172f8fa7c0a
+  [IPFS] ✓ round_4_votes.gz → QmR7yqHo9k4MXxzrixgQ… (1,036 → 315 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 4: 8 accepted / 2 rejected)...
+  [EVM] Transaction sent: 8b2e96be78a7b710f85a410ba398974909700b0c844dce6b2b06ecfa601f7636
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0431 | ACCEPTED |
+|   1    | 0.0314 | ACCEPTED |
+|   2    | 0.0358 | ACCEPTED |
+|   3    | 0.0361 | ACCEPTED |
+|   4    | 0.0464 | REJECTED |
+|   5    | 0.0358 | ACCEPTED |
+|   6    | 0.0446 | ACCEPTED |
+|   7    | 0.0422 | ACCEPTED |
+|   8    | 0.0473 | REJECTED |
+|   9    | 0.0379 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 4 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   1    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   2    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   3    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   4    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   5    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   6    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   7    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   8    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
+|   9    | 0.2815 | 0.9114 | 0.9119 | 0.9903 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 4] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2815
+   accuracy            : 0.9114
+   f1_macro            : 0.9119
+   f1_weighted         : 0.9115
+   precision_macro     : 0.9133
+   recall_macro        : 0.9128
+   specificity_macro   : 0.9823
+   auc_macro           : 0.9903
+   ── Per-Activity ──  
+     WALKING  P=0.977  R=0.938  F1=0.957  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.924  F1=0.957  AUC=0.998  (n=471)
+     WALKING_DOWNSTAIRS  P=0.874  R=0.990  F1=0.929  AUC=0.999  (n=420)
+     SITTING  P=0.831  R=0.770  F1=0.799  AUC=0.968  (n=491)
+     STANDING  P=0.805  R=0.855  F1=0.830  AUC=0.978  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_4_global_model.gz → QmeTB6G81PzAUNcpKSAu… (3,476,897 → 3,187,345 bytes) [account_2/2]
+  [IPFS] ✓ round_4_global_metrics.gz → QmYnWBQbfCWixXzmiRHt… (200 → 185 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 4)...
+  [EVM] Transaction sent: 8fae10351f4cc43c82de62d018a6e1c587bf100e262df8c3baa79143a9077b6f
+  [EVM] Waiting for all Round 4 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854782
+  [EVM] ✓ Confirmed in block 47854783
+  [EVM] ✓ Confirmed in block 47854815
+
+[96m  [BLOCKCHAIN] Round 4 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4752[0m
+  [TIMING] Round wall time: 71.1s | Model payload: 3340 KB
+  [FedAvg] Round 5: lr=0.000410  (base=0.001000, decay=0.8)
+
+[96m  ROUND 5 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0485 |   1254  |  175.4  |  6  |
+|   1    | 0.0455 |   684   |   35.8  |  6  |
+|   2    | 0.0322 |   666   |   35.5  |  6  |
+|   3    | 0.0255 |   738   |   40.2  |  6  |
+|   4    | 0.0431 |   936   |   50.3  |  6  |
+|   5    | 0.0238 |   1038  |   59.0  |  6  |
+|   6    | 0.0385 |   864   |   47.8  |  6  |
+|   7    | 0.0427 |   894   |   47.9  |  6  |
+|   8    | 0.0447 |   954   |   51.7  |  6  |
+|   9    | 0.0424 |   834   |   46.0  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0387  std=0.0082  threshold=0.0469
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 5 (async)...[0m
+  [IPFS] ✓ round_5_local.gz → QmTdpZaUxBtd43nqFsP7… (1,310 → 394 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 5, 10 clients)...
+  [EVM] Transaction sent: 1e033a01d21e831669349c3a4074ad826f392e56361d369fbcbd04e264b7b478
+  [IPFS] ✓ round_5_votes.gz → QmZBA1Lrw8VSWKJ6ZGm5… (1,030 → 314 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 5: 9 accepted / 1 rejected)...
+  [EVM] Transaction sent: ed365adfa713e4f3f404ca9e6ceb720d9f76b392de92c63af96fe05c93458289
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0485 | REJECTED |
+|   1    | 0.0455 | ACCEPTED |
+|   2    | 0.0322 | ACCEPTED |
+|   3    | 0.0255 | ACCEPTED |
+|   4    | 0.0431 | ACCEPTED |
+|   5    | 0.0238 | ACCEPTED |
+|   6    | 0.0385 | ACCEPTED |
+|   7    | 0.0427 | ACCEPTED |
+|   8    | 0.0447 | ACCEPTED |
+|   9    | 0.0424 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 5 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   1    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   2    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   3    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   4    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   5    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   6    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   7    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   8    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
+|   9    | 0.2718 | 0.9060 | 0.9069 | 0.9911 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 5] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2718
+   accuracy            : 0.9060
+   f1_macro            : 0.9069
+   f1_weighted         : 0.9061
+   precision_macro     : 0.9073
+   recall_macro        : 0.9077
+   specificity_macro   : 0.9812
+   auc_macro           : 0.9911
+   ── Per-Activity ──  
+     WALKING  P=0.971  R=0.944  F1=0.957  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.934  F1=0.963  AUC=0.999  (n=471)
+     WALKING_DOWNSTAIRS  P=0.884  R=0.979  F1=0.929  AUC=0.999  (n=420)
+     SITTING  P=0.794  R=0.776  F1=0.785  AUC=0.967  (n=491)
+     STANDING  P=0.802  R=0.814  F1=0.808  AUC=0.982  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_5_global_model.gz → Qma1m2eiHk5swenRENLw… (3,476,897 → 3,187,503 bytes) [account_2/2]
+  [IPFS] ✓ round_5_global_metrics.gz → QmcvRSvGAgz4r2iqvXUx… (200 → 183 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 5)...
+  [EVM] Transaction sent: b72f47afcbd079a3070b4616d17af153fe3efee440208b7f7849945e579b2051
+  [EVM] Waiting for all Round 5 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47854928
+  [EVM] ✓ Confirmed in block 47854929
+  [EVM] ✓ Confirmed in block 47854962
+
+[96m  [BLOCKCHAIN] Round 5 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4755[0m
+  [TIMING] Round wall time: 72.1s | Model payload: 3340 KB
+  [FedAvg] Round 6: lr=0.000328  (base=0.001000, decay=0.8)
+
+[96m  ROUND 6 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0338 |   1254  |  175.3  |  6  |
+|   1    | 0.0473 |   684   |   35.4  |  6  |
+|   2    | 0.0301 |   666   |   35.9  |  6  |
+|   3    | 0.0337 |   738   |   40.3  |  6  |
+|   4    | 0.0391 |   936   |   49.7  |  6  |
+|   5    | 0.0331 |   1038  |   58.8  |  6  |
+|   6    | 0.0402 |   864   |   47.7  |  6  |
+|   7    | 0.0390 |   894   |   47.8  |  6  |
+|   8    | 0.0395 |   954   |   51.4  |  6  |
+|   9    | 0.0399 |   834   |   46.0  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0376  std=0.0047  threshold=0.0423
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 6 (async)...[0m
+  [IPFS] ✓ round_6_local.gz → QmeSmypTaMxT6aEWBqrD… (1,313 → 392 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 6, 10 clients)...
+  [EVM] Transaction sent: 2ebf6d1256ba19f146da7f4e9022b344f6d7b826de9cb7b968b5249a2ab798a9
+  [IPFS] ✓ round_6_votes.gz → QmSKy1mgz5goQC8Bvnau… (1,033 → 312 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 6: 9 accepted / 1 rejected)...
+  [EVM] Transaction sent: 5662208f7c9399b0b8ba625e5aa8a161dfa28bdf2b1c110c13c7558260083d78
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0338 | ACCEPTED |
+|   1    | 0.0473 | REJECTED |
+|   2    | 0.0301 | ACCEPTED |
+|   3    | 0.0337 | ACCEPTED |
+|   4    | 0.0391 | ACCEPTED |
+|   5    | 0.0331 | ACCEPTED |
+|   6    | 0.0402 | ACCEPTED |
+|   7    | 0.0390 | ACCEPTED |
+|   8    | 0.0395 | ACCEPTED |
+|   9    | 0.0399 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 6 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   1    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   2    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   3    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   4    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   5    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   6    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   7    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   8    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
+|   9    | 0.2618 | 0.9152 | 0.9158 | 0.9917 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 6] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2618
+   accuracy            : 0.9152
+   f1_macro            : 0.9158
+   f1_weighted         : 0.9151
+   precision_macro     : 0.9171
+   recall_macro        : 0.9167
+   specificity_macro   : 0.9830
+   auc_macro           : 0.9917
+   ── Per-Activity ──  
+     WALKING  P=0.985  R=0.942  F1=0.963  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.936  F1=0.964  AUC=0.999  (n=471)
+     WALKING_DOWNSTAIRS  P=0.888  R=0.998  F1=0.939  AUC=0.999  (n=420)
+     SITTING  P=0.832  R=0.768  F1=0.799  AUC=0.971  (n=491)
+     STANDING  P=0.804  R=0.857  F1=0.830  AUC=0.982  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_6_global_model.gz → QmcQKDnS2gPg2nzG9ByG… (3,476,897 → 3,187,331 bytes) [account_2/2]
+  [IPFS] ✓ round_6_global_metrics.gz → QmSS435DDB9TKuTcNiFZ… (201 → 183 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 6)...
+  [EVM] Transaction sent: 84e032dac8ed703d82f6cb2b0524f08ff314c1b98f446995782a3bf6b6e805df
+  [EVM] Waiting for all Round 6 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47855076
+  [EVM] ✓ Confirmed in block 47855077
+  [EVM] ✓ Confirmed in block 47855105
+
+[96m  [BLOCKCHAIN] Round 6 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4758[0m
+  [TIMING] Round wall time: 63.1s | Model payload: 3340 KB
+  [FedAvg] Round 7: lr=0.000262  (base=0.001000, decay=0.8)
+
+[96m  ROUND 7 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0375 |   1254  |  175.7  |  6  |
+|   1    | 0.0308 |   684   |   35.5  |  6  |
+|   2    | 0.0365 |   666   |   35.5  |  6  |
+|   3    | 0.0307 |   738   |   40.4  |  6  |
+|   4    | 0.0401 |   936   |   49.6  |  6  |
+|   5    | 0.0427 |   1038  |   59.4  |  6  |
+|   6    | 0.0380 |   864   |   48.4  |  6  |
+|   7    | 0.0432 |   894   |   46.9  |  6  |
+|   8    | 0.0536 |   954   |   52.0  |  6  |
+|   9    | 0.0391 |   834   |   45.6  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0392  std=0.0063  threshold=0.0455
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 7 (async)...[0m
+  [IPFS] ✓ round_7_local.gz → QmNTPCoCcuqAYtud6JLF… (1,313 → 391 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 7, 10 clients)...
+  [EVM] Transaction sent: c5081457ba38212b7727a3ac5af97223fc25c6962b3d88150cd196265e63ddde
+  [IPFS] ✓ round_7_votes.gz → QmXpZ7YiuuXNsbXE6Qmu… (1,032 → 316 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 7: 9 accepted / 1 rejected)...
+  [EVM] Transaction sent: f906fc7cbfbafb2241e3bdd1da653b98f0006b9dfa7a8959afd9984f426f7d7e
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0375 | ACCEPTED |
+|   1    | 0.0308 | ACCEPTED |
+|   2    | 0.0365 | ACCEPTED |
+|   3    | 0.0307 | ACCEPTED |
+|   4    | 0.0401 | ACCEPTED |
+|   5    | 0.0427 | ACCEPTED |
+|   6    | 0.0380 | ACCEPTED |
+|   7    | 0.0432 | ACCEPTED |
+|   8    | 0.0536 | REJECTED |
+|   9    | 0.0391 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 7 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   1    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   2    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   3    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   4    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   5    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   6    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   7    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   8    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
+|   9    | 0.2619 | 0.9131 | 0.9137 | 0.9911 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 7] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2619
+   accuracy            : 0.9131
+   f1_macro            : 0.9137
+   f1_weighted         : 0.9131
+   precision_macro     : 0.9151
+   recall_macro        : 0.9147
+   specificity_macro   : 0.9826
+   auc_macro           : 0.9911
+   ── Per-Activity ──  
+     WALKING  P=0.983  R=0.944  F1=0.963  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.924  F1=0.957  AUC=0.998  (n=471)
+     WALKING_DOWNSTAIRS  P=0.880  R=0.998  F1=0.935  AUC=0.999  (n=420)
+     SITTING  P=0.829  R=0.770  F1=0.798  AUC=0.970  (n=491)
+     STANDING  P=0.805  R=0.853  F1=0.828  AUC=0.980  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_7_global_model.gz → QmbeJRqatpD49CnSCtwn… (3,476,897 → 3,187,659 bytes) [account_2/2]
+  [IPFS] ✓ round_7_global_metrics.gz → Qmb27tDR7QYcfqx89z8H… (202 → 182 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 7)...
+  [EVM] Transaction sent: 1d4589057c0ce3755a680140b6ef0678bc61197a6d205c2fb6fae11725daa6d1
+  [EVM] Waiting for all Round 7 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47855219
+  [EVM] ✓ Confirmed in block 47855220
+  [EVM] ✓ Confirmed in block 47855255
+
+[96m  [BLOCKCHAIN] Round 7 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4761[0m
+  [TIMING] Round wall time: 77.5s | Model payload: 3340 KB
+  [FedAvg] Round 8: lr=0.000210  (base=0.001000, decay=0.8)
+
+[96m  ROUND 8 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0349 |   1254  |  177.1  |  6  |
+|   1    | 0.0371 |   684   |   35.5  |  6  |
+|   2    | 0.0296 |   666   |   35.5  |  6  |
+|   3    | 0.0421 |   738   |   40.2  |  6  |
+|   4    | 0.0510 |   936   |   50.2  |  6  |
+|   5    | 0.0367 |   1038  |   59.0  |  6  |
+|   6    | 0.0350 |   864   |   47.8  |  6  |
+|   7    | 0.0292 |   894   |   47.7  |  6  |
+|   8    | 0.0341 |   954   |   51.5  |  6  |
+|   9    | 0.0369 |   834   |   46.2  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0367  std=0.0059  threshold=0.0426
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 8 (async)...[0m
+  [IPFS] ✓ round_8_local.gz → Qmf8Gjaz5S6dtRPPsxA7… (1,314 → 391 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 8, 10 clients)...
+  [EVM] Transaction sent: ac95d529b334fb77bbae644a75a5c134f72a86b3b811b24ed2ddb5a8558456af
+  [IPFS] ✓ round_8_votes.gz → QmXKhpeySyZaexkhrojE… (1,033 → 318 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 8: 9 accepted / 1 rejected)...
+  [EVM] Transaction sent: b3f36bf757b088a947b869ba657b3530483e6149136336db211eb780496aea92
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0349 | ACCEPTED |
+|   1    | 0.0371 | ACCEPTED |
+|   2    | 0.0296 | ACCEPTED |
+|   3    | 0.0421 | ACCEPTED |
+|   4    | 0.0510 | REJECTED |
+|   5    | 0.0367 | ACCEPTED |
+|   6    | 0.0350 | ACCEPTED |
+|   7    | 0.0292 | ACCEPTED |
+|   8    | 0.0341 | ACCEPTED |
+|   9    | 0.0369 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 8 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   1    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   2    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   3    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   4    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   5    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   6    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   7    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   8    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
+|   9    | 0.2587 | 0.9169 | 0.9175 | 0.9915 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 8] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2587
+   accuracy            : 0.9169
+   f1_macro            : 0.9175
+   f1_weighted         : 0.9168
+   precision_macro     : 0.9189
+   recall_macro        : 0.9184
+   specificity_macro   : 0.9834
+   auc_macro           : 0.9915
+   ── Per-Activity ──  
+     WALKING  P=0.992  R=0.944  F1=0.967  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.938  F1=0.965  AUC=0.999  (n=471)
+     WALKING_DOWNSTAIRS  P=0.886  R=0.998  F1=0.938  AUC=0.999  (n=420)
+     SITTING  P=0.838  R=0.768  F1=0.801  AUC=0.971  (n=491)
+     STANDING  P=0.805  R=0.863  F1=0.833  AUC=0.981  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_8_global_model.gz → QmbM1qVHiru59s2fdR6T… (3,476,897 → 3,187,987 bytes) [account_2/2]
+  [IPFS] ✓ round_8_global_metrics.gz → QmXBTZjbL75M27WjhVgu… (200 → 179 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 8)...
+  [EVM] Transaction sent: 7a37055b4d4a74a93e0b569c9c5bf91b768833dd7b2ae9e3d43bec5fb4848812
+  [EVM] Waiting for all Round 8 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47855370
+  [EVM] ✓ Confirmed in block 47855371
+  [EVM] ✓ Confirmed in block 47855402
+
+[96m  [BLOCKCHAIN] Round 8 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4764[0m
+  [TIMING] Round wall time: 68.2s | Model payload: 3340 KB
+  [FedAvg] Round 9: lr=0.000168  (base=0.001000, decay=0.8)
+
+[96m  ROUND 9 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0327 |   1254  |  176.0  |  6  |
+|   1    | 0.0453 |   684   |   35.4  |  6  |
+|   2    | 0.0339 |   666   |   35.5  |  6  |
+|   3    | 0.0378 |   738   |   40.4  |  6  |
+|   4    | 0.0437 |   936   |   49.7  |  6  |
+|   5    | 0.0201 |   1038  |   59.0  |  6  |
+|   6    | 0.0389 |   864   |   47.7  |  6  |
+|   7    | 0.0264 |   894   |   47.8  |  6  |
+|   8    | 0.0424 |   954   |   51.5  |  6  |
+|   9    | 0.0286 |   834   |   46.1  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0350  std=0.0078  threshold=0.0427
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 9 (async)...[0m
+  [IPFS] ✓ round_9_local.gz → QmZ3V2A1A7raSFif1eaH… (1,315 → 395 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 9, 10 clients)...
+  [EVM] Transaction sent: ff2f6574268089cbcfe14d8532fe16bf1eaa52547a644161feafa2827aef71de
+  [IPFS] ✓ round_9_votes.gz → QmX4Mj8LSnyCicCMnst2… (1,043 → 324 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 9: 8 accepted / 2 rejected)...
+  [EVM] Transaction sent: a9b17c56ad9a39ab5458a8c9ff3a81731b8bcb0fbd02c0f19dc58b916b34d227
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0327 | ACCEPTED |
+|   1    | 0.0453 | REJECTED |
+|   2    | 0.0339 | ACCEPTED |
+|   3    | 0.0378 | ACCEPTED |
+|   4    | 0.0437 | REJECTED |
+|   5    | 0.0201 | ACCEPTED |
+|   6    | 0.0389 | ACCEPTED |
+|   7    | 0.0264 | ACCEPTED |
+|   8    | 0.0424 | ACCEPTED |
+|   9    | 0.0286 | ACCEPTED |
++--------+--------+----------+
+
+[92m  ROUND 9 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   1    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   2    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   3    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   4    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   5    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   6    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   7    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   8    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
+|   9    | 0.2573 | 0.9189 | 0.9194 | 0.9909 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 9] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2573
+   accuracy            : 0.9189
+   f1_macro            : 0.9194
+   f1_weighted         : 0.9189
+   precision_macro     : 0.9205
+   recall_macro        : 0.9202
+   specificity_macro   : 0.9838
+   auc_macro           : 0.9909
+   ── Per-Activity ──  
+     WALKING  P=0.981  R=0.946  F1=0.963  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.993  R=0.941  F1=0.966  AUC=0.999  (n=471)
+     WALKING_DOWNSTAIRS  P=0.893  R=0.990  F1=0.939  AUC=0.999  (n=420)
+     SITTING  P=0.842  R=0.780  F1=0.810  AUC=0.970  (n=491)
+     STANDING  P=0.814  R=0.865  F1=0.839  AUC=0.978  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_9_global_model.gz → QmcjwwyBeD6vk8uvyt7k… (3,476,897 → 3,188,007 bytes) [account_2/2]
+  [IPFS] ✓ round_9_global_metrics.gz → QmRj9CdeusajqYLKQ3h7… (201 → 185 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 9)...
+  [EVM] Transaction sent: 2faf5201b5583a707b92bdbed305754ce4ddd9d57f20d4fc7b0a9d9fae7ad3ce
+  [EVM] Waiting for all Round 9 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47855515
+  [EVM] ✓ Confirmed in block 47855516
+  [EVM] ✓ Confirmed in block 47855545
+
+[96m  [BLOCKCHAIN] Round 9 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4767[0m
+  [TIMING] Round wall time: 64.4s | Model payload: 3340 KB
+  [FedAvg] Round 10: lr=0.000134  (base=0.001000, decay=0.8)
+
+[96m  ROUND 10 TRAINING: 10 devices[0m
++--------+--------+---------+---------+-----+
+| Device |  Loss  | Samples | Time(s) | Cls |
++--------+--------+---------+---------+-----+
+|   0    | 0.0359 |   1254  |  175.2  |  6  |
+|   1    | 0.0373 |   684   |   35.5  |  6  |
+|   2    | 0.0240 |   666   |   35.5  |  6  |
+|   3    | 0.0307 |   738   |   40.3  |  6  |
+|   4    | 0.0408 |   936   |   50.3  |  6  |
+|   5    | 0.0344 |   1038  |   58.9  |  6  |
+|   6    | 0.0368 |   864   |   47.8  |  6  |
+|   7    | 0.0238 |   894   |   48.1  |  6  |
+|   8    | 0.0378 |   954   |   51.5  |  6  |
+|   9    | 0.0402 |   834   |   45.8  |  6  |
++--------+--------+---------+---------+-----+
+  Loss  mean=0.0342  std=0.0058  threshold=0.0400
+
+[96m  [BLOCKCHAIN] Firing LOCAL + VOTE blocks for Round 10 (async)...[0m
+  [IPFS] ✓ round_10_local.gz → QmZTYxDU3tskpW8AqE2D… (1,312 → 394 bytes) [account_2/2]
+
+  [EVM] Firing LOCAL block (Round 10, 10 clients)...
+  [EVM] Transaction sent: af49a3ea755025c9e4651364d31a0f054736e9800ac5ec28277dd5fa7bd0a34f
+  [IPFS] ✓ round_10_votes.gz → QmQKMLGF2NnGq9FH2Pn7… (1,040 → 317 bytes) [account_2/2]
+  [EVM] Firing VOTE block (Round 10: 8 accepted / 2 rejected)...
+  [EVM] Transaction sent: fc3867a8a8bb1bc7636a0347c9c4774a15e4493aeb00f5d7ae1ac8232c0523fb
++--------+--------+----------+
+| Device |  Loss  | Verdict  |
++--------+--------+----------+
+|   0    | 0.0359 | ACCEPTED |
+|   1    | 0.0373 | ACCEPTED |
+|   2    | 0.0240 | ACCEPTED |
+|   3    | 0.0307 | ACCEPTED |
+|   4    | 0.0408 | REJECTED |
+|   5    | 0.0344 | ACCEPTED |
+|   6    | 0.0368 | ACCEPTED |
+|   7    | 0.0238 | ACCEPTED |
+|   8    | 0.0378 | ACCEPTED |
+|   9    | 0.0402 | REJECTED |
++--------+--------+----------+
+
+[92m  ROUND 10 EVALUATION: 10 devices[0m
++--------+--------+--------+--------+--------+------+
+| Device |  Loss  |  Acc   |   F1   |  AUC   |  N   |
++--------+--------+--------+--------+--------+------+
+|   0    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   1    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   2    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   3    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   4    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   5    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   6    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   7    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   8    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
+|   9    | 0.2517 | 0.9186 | 0.9191 | 0.9914 | 2947 |
++--------+--------+--------+--------+--------+------+
+
+[93m════════════════════════════════════════════════════════════[0m
+[93m  [ROUND 10] GLOBAL — 6 Activities (UCI HAR)[0m
+[93m════════════════════════════════════════════════════════════[0m
+   loss                : 0.2517
+   accuracy            : 0.9186
+   f1_macro            : 0.9191
+   f1_weighted         : 0.9185
+   precision_macro     : 0.9202
+   recall_macro        : 0.9199
+   specificity_macro   : 0.9837
+   auc_macro           : 0.9914
+   ── Per-Activity ──  
+     WALKING  P=0.983  R=0.946  F1=0.964  AUC=0.999  (n=496)
+     WALKING_UPSTAIRS  P=0.991  R=0.941  F1=0.965  AUC=0.999  (n=471)
+     WALKING_DOWNSTAIRS  P=0.893  R=0.993  F1=0.940  AUC=0.999  (n=420)
+     SITTING  P=0.843  R=0.776  F1=0.808  AUC=0.971  (n=491)
+     STANDING  P=0.811  R=0.865  F1=0.837  AUC=0.980  (n=532)
+     LAYING  P=1.000  R=1.000  F1=1.000  AUC=1.000  (n=537)
+  [IPFS] ✓ round_10_global_model.gz → QmdMi1C2KhWeqwgxAYvi… (3,476,897 → 3,187,689 bytes) [account_2/2]
+  [IPFS] ✓ round_10_global_metrics.gz → QmWD9FyK4ayWfoHi4nrn… (202 → 183 bytes) [account_2/2]
+
+  [EVM] Firing GLOBAL block (Round 10)...
+  [EVM] Transaction sent: fb3ebd61861e77e5e224d9faf17d84114349a2d8b5a2f4af1e263af6a2b5b704
+  [EVM] Waiting for all Round 10 transactions to confirm...
+  [EVM] Waiting for 3 pending transaction(s)...
+  [EVM] ✓ Confirmed in block 47855659
+  [EVM] ✓ Confirmed in block 47855660
+  [EVM] ✓ Confirmed in block 47855690
+
+[96m  [BLOCKCHAIN] Round 10 complete — 3 blocks written (LOCAL + VOTE + GLOBAL) | Chain length: 4770[0m
+  [TIMING] Round wall time: 67.2s | Model payload: 3340 KB
+
+  ════════════════════════════════════════════════════════════
+  EVM BLOCKCHAIN SUMMARY
+  ════════════════════════════════════════════════════════════
+  Contract:        0xBE3FeAC76293711C5D32426860303AfE24cdf527
+  Total blocks:    4770
+  Chain integrity: ✓ VALID
+  IPFS backend:    pinata
+  IPFS pins:       42
+  IPFS uploaded:   35,033,322 bytes
+  ════════════════════════════════════════════════════════════
+
+
+[92m   Done. Model  -> final_model.pt
+    Metrics -> outputs_ucihar/baseline_20260626_231616/results.json[0m
