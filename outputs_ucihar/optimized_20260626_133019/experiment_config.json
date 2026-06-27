@@ -1,0 +1,15 @@
+{
+  "variant": "optimized",
+  "run_timestamp": "20260626_133019",
+  "output_dir": "outputs_ucihar/optimized_20260626_133019",
+  "blockchain_optimized": true,
+  "ipfs_backend": "pinata",
+  "pinata_account": "1",
+  "hardware_note": "10x RPi4, WiFi 2.4GHz",
+  "num_rounds": 10,
+  "num_clients": 10,
+  "local_epochs": 3,
+  "batch_size": 64,
+  "lr": 0.001,
+  "started_at": "2026-06-26T13:30:19.505895"
+}
