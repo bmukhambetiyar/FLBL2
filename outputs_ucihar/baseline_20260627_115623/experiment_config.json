@@ -1,0 +1,15 @@
+{
+  "variant": "baseline",
+  "run_timestamp": "20260627_115623",
+  "output_dir": "outputs_ucihar/baseline_20260627_115623",
+  "blockchain_optimized": false,
+  "ipfs_backend": "pinata",
+  "pinata_account": "1",
+  "hardware_note": "10x RPi4, WiFi 2.4GHz",
+  "num_rounds": 10,
+  "num_clients": 10,
+  "local_epochs": 3,
+  "batch_size": 64,
+  "lr": 0.001,
+  "started_at": "2026-06-27T11:56:23.149998"
+}
