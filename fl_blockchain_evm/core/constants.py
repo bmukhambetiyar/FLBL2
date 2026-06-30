@@ -20,6 +20,17 @@ if _DATASET == "pamap2":
     NUM_CHANNELS = 27
     WINDOW_SIZE  = 512
     WINDOW_STEP  = 256
+elif _DATASET == "mhealth":
+    DATASET_NAME: str = "MHEALTH"
+    ACTIVITY_NAMES: List[str] = [
+        "STANDING", "SITTING", "LYING", "WALKING", "CLIMBING_STAIRS",
+        "WAIST_BENDS", "ARM_ELEVATION", "KNEES_BENDING", "CYCLING",
+        "JOGGING", "RUNNING", "JUMP_FRONT_BACK",
+    ]
+    NUM_CLASSES  = 12
+    NUM_CHANNELS = 23
+    WINDOW_SIZE  = 256
+    WINDOW_STEP  = 128
 else:
     # UCI HAR (default)
     DATASET_NAME: str = "UCI HAR"
