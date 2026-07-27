@@ -192,12 +192,26 @@ The two middleware variants write the same transactions and the same on-chain da
 ---
 
 ## Citation
-
-If you use this code or data, please cite the data article and the dataset:
+If you use this repository, the underlying dataset, or the experimental code in your research, please cite both the Mendeley Data release and the *Data in Brief* publication.
+### 1. Dataset (Mendeley Data)
 
 ```
-T. Bayan, B. Mukhambetiyar, A. Boranbayev, A. Yazici. Dataset of Round-Level Federated
-Learning and Layer-2 Blockchain Overhead from Ten Raspberry Pi Edge Clients. Data in Brief.
-
-Dataset: Mendeley Data, DOI 10.17632/dgmjr3ngtv.2.
+Bayan, Talgar; Mukhambetiyar, Bibarys; Boranbayev, Askar; Yazici, Adnan (2026), “New Dataset of Performance Metrics, Device Telemetry, and Blockchain Audit Logs from a Federated Learning Testbed on Raspberry Pi Devices for HAR”, Mendeley Data, V2, doi: 10.17632/dgmjr3ngtv.2
 ```
+
+### 2. Journal Article (BibTeX)
+
+```
+@article{BAYAN2026113111,
+title = {Dataset of Round-Level Federated Learning and Layer-2 Blockchain Overhead from Ten Raspberry Pi Edge Clients},
+journal = {Data in Brief},
+pages = {113111},
+year = {2026},
+issn = {2352-3409},
+doi = {https://doi.org/10.1016/j.dib.2026.113111},
+url = {https://www.sciencedirect.com/science/article/pii/S2352340926006591},
+author = {Talgar Bayan and Bibarys Mukhambetiyar and Askar Boranbayev and Adnan Yazici},
+}
+```
+
+
