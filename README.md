@@ -203,8 +203,9 @@ Bayan, Talgar; Mukhambetiyar, Bibarys; Boranbayev, Askar; Yazici, Adnan (2026), 
 
 ```
 @article{BAYAN2026113111,
-title = {Dataset of Round-Level Federated Learning and Layer-2 Blockchain Overhead from Ten Raspberry Pi Edge Clients},
+title = {Dataset of round-level federated learning and layer-2 blockchain overhead from ten raspberry Pi edge clients},
 journal = {Data in Brief},
+volume = {68},
 pages = {113111},
 year = {2026},
 issn = {2352-3409},
