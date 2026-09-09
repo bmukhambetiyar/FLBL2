@@ -27,7 +27,8 @@ elsarticle/
 paper_my/
 
 AI_words_Avoid_to_Use.md
-paper_elsevier/
+FGCS_paper_all/paper/
+FGCS_paper_all/submitted_2026-06-01/
 review_02.md
 reviews_.md
 
@@ -112,7 +113,7 @@ target/
 .ipynb_checkpoints
 
 # IPython
-profile_default/
+data_paper_all/
 ipython_config.py
 
 # pyenv
