@@ -192,14 +192,31 @@ The two middleware variants write the same transactions and the same on-chain da
 ---
 
 ## Citation
-If you use this repository, the underlying dataset, or the experimental code in your research, please cite both the Mendeley Data release and the *Data in Brief* publication.
-### 1. Dataset (Mendeley Data)
+If you use this repository, the underlying dataset, or the experimental code in your research, please cite the main *Future Generation Computer Systems* paper, and the Mendeley Data release and *Data in Brief* publication where you use the data. Machine-readable metadata is in [`CITATION.cff`](CITATION.cff).
+
+### 1. Main paper (Future Generation Computer Systems)
+
+```
+@article{BAYAN2027108931,
+title = {FLBL2: Real-world Layer-2 blockchain auditing for federated learning on edge hardware},
+journal = {Future Generation Computer Systems},
+volume = {189},
+pages = {108931},
+year = {2027},
+issn = {0167-739X},
+doi = {https://doi.org/10.1016/j.future.2026.108931},
+url = {https://www.sciencedirect.com/science/article/pii/S0167739X26005650},
+author = {Talgar Bayan and Bibarys Mukhambetiyar and Adnan Yazici},
+}
+```
+
+### 2. Dataset (Mendeley Data)
 
 ```
 Bayan, Talgar; Mukhambetiyar, Bibarys; Boranbayev, Askar; Yazici, Adnan (2026), “New Dataset of Performance Metrics, Device Telemetry, and Blockchain Audit Logs from a Federated Learning Testbed on Raspberry Pi Devices for HAR”, Mendeley Data, V2, doi: 10.17632/dgmjr3ngtv.2
 ```
 
-### 2. Journal Article (BibTeX)
+### 3. Data article (Data in Brief, BibTeX)
 
 ```
 @article{BAYAN2026113111,

@@ -1,0 +1,60 @@
+cff-version: 1.2.0
+message: "If you use this software or its data, please cite the FGCS paper (preferred citation) and, where relevant, the dataset and Data in Brief article."
+title: "FLBL2: Real-world Layer-2 blockchain auditing for federated learning on edge hardware"
+type: software
+authors:
+  - family-names: Bayan
+    given-names: Talgar
+  - family-names: Mukhambetiyar
+    given-names: Bibarys
+  - family-names: Yazici
+    given-names: Adnan
+repository-code: "https://github.com/bmukhambetiyar/flbl2"
+license: Apache-2.0
+preferred-citation:
+  type: article
+  title: "FLBL2: Real-world Layer-2 blockchain auditing for federated learning on edge hardware"
+  authors:
+    - family-names: Bayan
+      given-names: Talgar
+    - family-names: Mukhambetiyar
+      given-names: Bibarys
+    - family-names: Yazici
+      given-names: Adnan
+  journal: "Future Generation Computer Systems"
+  volume: 189
+  start: 108931
+  year: 2027
+  issn: "0167-739X"
+  doi: "10.1016/j.future.2026.108931"
+  url: "https://www.sciencedirect.com/science/article/pii/S0167739X26005650"
+references:
+  - type: dataset
+    title: "New Dataset of Performance Metrics, Device Telemetry, and Blockchain Audit Logs from a Federated Learning Testbed on Raspberry Pi Devices for HAR"
+    authors:
+      - family-names: Bayan
+        given-names: Talgar
+      - family-names: Mukhambetiyar
+        given-names: Bibarys
+      - family-names: Boranbayev
+        given-names: Askar
+      - family-names: Yazici
+        given-names: Adnan
+    year: 2026
+    doi: "10.17632/dgmjr3ngtv.2"
+  - type: article
+    title: "Dataset of round-level federated learning and layer-2 blockchain overhead from ten raspberry Pi edge clients"
+    authors:
+      - family-names: Bayan
+        given-names: Talgar
+      - family-names: Mukhambetiyar
+        given-names: Bibarys
+      - family-names: Boranbayev
+        given-names: Askar
+      - family-names: Yazici
+        given-names: Adnan
+    journal: "Data in Brief"
+    volume: 68
+    start: 113111
+    year: 2026
+    doi: "10.1016/j.dib.2026.113111"
