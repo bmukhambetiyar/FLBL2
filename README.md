@@ -1,5 +1,7 @@
 # FLBL2: Real-World Layer-2 Blockchain Auditing for Federated Learning on Edge Hardware
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24396321.svg)](https://doi.org/10.5281/zenodo.24396321)
+
 Federated learning across ten Raspberry Pi 4 devices, with every training round committed on-chain to Base mainnet (an Ethereum Layer-2) through a Solidity smart contract and archived on IPFS.
 
 **Dataset (Mendeley Data):** [10.17632/dgmjr3ngtv.2](https://data.mendeley.com/datasets/dgmjr3ngtv/2) · **Contract:** [`0xBE3FeAC76293711C5D32426860303AfE24cdf527`](https://basescan.org/address/0xBE3FeAC76293711C5D32426860303AfE24cdf527) on Base mainnet (chain ID 8453)
